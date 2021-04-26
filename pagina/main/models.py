@@ -6,7 +6,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class chofer(models.Model):
     nombre = models.CharField(max_length=150)
     apellido = models.CharField(max_length=100)
-    correo = models.CharField(max_length=200)
+    correo = models.EmailField(max_length=200)
     informacion_contacto = models.CharField(max_length=200)
 
     def __str__(self):
@@ -37,9 +37,10 @@ class viaje(models.Model):
     lugar_llegada = models.CharField(max_length=100)
     chofer =  models.ForeignKey(chofer, default=None, on_delete=models.CASCADE)
     combi =  models.ForeignKey(combi, default=None, on_delete=models.CASCADE)
+    insumo = models.ManyToManyField(insumo)
 
     def __str__(self):
-        return (self.lugar_salida+" "+self.lugar_salida+" "+self.fecha)
+        return (self.lugar_salida+" "+self.lugar_salida+" "+str(self.fecha))
 
 class lugar(models.Model):
     localidad = models.CharField(max_length=150)
