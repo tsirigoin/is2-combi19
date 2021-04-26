@@ -4,7 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 # Create your models here.
 
 class chofer(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=150)
     apellido = models.CharField(max_length=100)
     correo = models.CharField(max_length=200)
     informacion_contacto = models.CharField(max_length=200)
