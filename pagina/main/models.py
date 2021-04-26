@@ -40,3 +40,10 @@ class viaje(models.Model):
 
     def __str__(self):
         return (self.lugar_salida+" "+self.lugar_salida+" "+self.fecha)
+
+class lugar(models.Model):
+    localidad = models.CharField(max_length=150)
+    provincia = models.CharField(max_length=100)
+
+    def __str__(self):
+        return (self.localidad+" "+self.provincia)
