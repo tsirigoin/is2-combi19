@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Registrarse
+{% endblock title %}
+
+{% block content %}
+Registrarse en el sitio
+<form method="post" action="/create/">
+	{{form}}
+	<button type="submit", name="save">Create New</button>
+</form>
+{% endblock content %}

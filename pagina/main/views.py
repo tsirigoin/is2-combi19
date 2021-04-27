@@ -3,5 +3,8 @@ from django.http import HttpResponse
 
 # Create your views here.
 
-def index(respose):
-    return HttpResponse("String de prueba")
+def home(response):
+    return render(response, "main/home.html", {})
+
+def register(response):
+    return render(response, "main/registro.html", {})
