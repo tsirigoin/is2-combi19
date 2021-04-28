@@ -1,5 +1,10 @@
 {% extends 'main/base.html' %}
 
-{% block title %}
-Home
-{% endblock title %}
+{% block content_title %} Home {% endblock content_title %}
+{% block content %}
+<ul>
+    {%for viaje in listaViaje %}
+        <li>{{viaje}}</li>
+    {% endfor %}
+</ul>
+{% endblock content %}
