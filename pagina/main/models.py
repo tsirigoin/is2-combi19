@@ -48,3 +48,14 @@ class lugar(models.Model):
 
     def __str__(self):
         return (self.localidad+" "+self.provincia)
+
+class usuario(models.Model):
+    mail = models.EmailField()
+    username = models.CharField(max_length=40)
+    password = models.CharField(max_length=20)
+    nombre = models.CharField(max_length=100)
+    apellido = models.CharField(max_length=100)
+    fechaNac = models.DateField()
+
+    def __str__(self):
+        return (self.nombre+" "+self.apellido)
