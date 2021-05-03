@@ -30,11 +30,17 @@ class insumo(models.Model):
     def __str__(self):
         return self.nombre+" "+self.descripcion
 
+class ruta(models.Model):
+    origen = models.CharField(max_length=100)
+    destino = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.origen+" "+self.destino
+
 class viaje(models.Model):
     descripcion = models.CharField(max_length=100)
     fecha = models.DateTimeField()
-    lugar_salida = models.CharField(max_length=100)
-    lugar_llegada = models.CharField(max_length=100)
+    ruta =  models.ForeignKey(ruta, default=None, on_delete=models.CASCADE)
     chofer =  models.ForeignKey(chofer, default=None, on_delete=models.CASCADE)
     combi =  models.ForeignKey(combi, default=None, on_delete=models.CASCADE)
     insumo = models.ForeignKey(insumo, default=None, on_delete=models.CASCADE) #falta correguir
