@@ -14,7 +14,7 @@ class chofer(models.Model):
 
 
 class combi(models.Model):
-    patente = models.CharField(max_length=20)
+    patente = models.CharField(max_length=20, unique=True)
     tipo = models.CharField(max_length=100)
     capacidad = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)])
 
@@ -22,7 +22,7 @@ class combi(models.Model):
         return self.patente
 
 class insumo(models.Model):
-    nombre = models.CharField(max_length=100)
+    nombre = models.CharField(max_length=100, unique=True)
     descripcion = models.CharField(max_length=100)
     precio = models.FloatField(validators=[MinValueValidator(0), MaxValueValidator(999)])
     cantidad = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)])
@@ -30,16 +30,12 @@ class insumo(models.Model):
     def __str__(self):
         return self.nombre+" "+self.descripcion
 
-class lugar(models.Model):
-    localidad = models.CharField(max_length=150)
-    provincia = models.CharField(max_length=100)
-
-    def __str__(self):
-        return (self.localidad+" "+self.provincia)
-
 class ruta(models.Model):
-    origen = models.ForeignKey(lugar, default=None, on_delete=models.CASCADE)
-    destino = models.ForeignKey(lugar, default=None, on_delete=models.CASCADE,related_name='origen')
+    origen = models.CharField(max_length=100)
+    destino = models.CharField(max_length=100)
+
+    class Meta:
+        unique_together = ('origen', 'destino',)
 
     def __str__(self):
         return self.origen+" "+self.destino
@@ -52,9 +48,21 @@ class viaje(models.Model):
     combi =  models.ForeignKey(combi, default=None, on_delete=models.CASCADE)
     insumo = models.ForeignKey(insumo, default=None, on_delete=models.CASCADE) #falta correguir
 
+    class Meta:
+        unique_together = ('chofer', 'fecha', 'ruta',)
+
     def __str__(self):
         return (self.descripcion+" "+self.lugar_salida+" "+self.lugar_llegada+" "+str(self.fecha))
 
+class lugar(models.Model):
+    localidad = models.CharField(max_length=150)
+    provincia = models.CharField(max_length=100)
+
+    class Meta:
+        unique_together = ('localidad', 'provincia',)
+
+    def __str__(self):
+        return (self.localidad+" "+self.provincia)
 
 class usuario(models.Model):
     mail = models.EmailField()
