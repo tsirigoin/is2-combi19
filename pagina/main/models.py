@@ -52,7 +52,7 @@ class viaje(models.Model):
         unique_together = ('chofer', 'fecha', 'ruta',)
 
     def __str__(self):
-        return (self.descripcion+" "+self.lugar_salida+" "+self.lugar_llegada+" "+str(self.fecha))
+        return (self.descripcion+" "+self.ruta.origen+" "+self.ruta.destino+" "+str(self.fecha))
 
 class lugar(models.Model):
     localidad = models.CharField(max_length=150)
