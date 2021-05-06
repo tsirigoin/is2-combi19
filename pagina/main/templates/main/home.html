@@ -22,6 +22,7 @@
   overflow: hidden;
   background-color: #f1f1f1;
 }
+
 </style>
 
 {% extends 'main/base.html' %}
@@ -30,10 +31,11 @@
 {% block content %}
         {%for viaje in listaViaje %}
             <button type="button"  class="viajeCollapse">
-                {{viaje}}
+                <h2><p style="text-align:left"> Origen: {{viaje.ruta.origen}} Destino: {{viaje.ruta.destino}}
+                  <span style="float:right">Fecha: {{viaje.fecha}}</span></p></h2>
             </button>
             <div class="contenido">
-                <p>testingaaaaaaaaaaaaaaaaaaaaa</p> 
+                <h3 style="text-align:left" >{{viaje.descripcion}}<p style="text-align:right">"precio"</p></h3> 
             </div>
         {% endfor %}
 
