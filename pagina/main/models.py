@@ -33,11 +33,11 @@ class Lugar(models.Model):
         return (self.localidad+" "+self.provincia)
 
 class Ruta(models.Model):
-    origen = models.ForeignKey(Lugar, default=None, on_delete=models.CASCADE, related_name='origen')
-    destino = models.ForeignKey(Lugar, default=None, on_delete=models.CASCADE, related_name='destino')
+    origen = models.ForeignKey(Lugar, default=None, on_delete=models.CASCADE,unique=True, related_name='origen')
+    destino = models.ForeignKey(Lugar, default=None, on_delete=models.CASCADE,unique=True, related_name='destino')
 
     class Meta:
-        unique_together = ('origen', 'destino',)
+        unique_together = ('origen', 'destino')
 
     def __str__(self):
         return str(self.origen)+" "+str(self.destino)
