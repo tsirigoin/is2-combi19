@@ -1,9 +1,8 @@
-from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
-from .models import viaje, usuario
+from .models import Viaje
 
 # Create your views here.
 
 def home(response):
-    listaViaje = viaje.objects.all()
+    listaViaje = Viaje.objects.all()
     return render(response, "main/home.html", {"listaViaje":listaViaje})

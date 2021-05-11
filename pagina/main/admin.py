@@ -1,10 +1,9 @@
 from django.contrib import admin
-from .models import combi,chofer,insumo, viaje, lugar,ruta
+from .models import Combi, Insumo, Viaje, Lugar, Ruta
 
 # Register your models here.
-admin.site.register(combi)
-admin.site.register(chofer)
-admin.site.register(insumo)
-admin.site.register(ruta)
-admin.site.register(viaje)
-admin.site.register(lugar)
+admin.site.register(Combi)
+admin.site.register(Insumo)
+admin.site.register(Ruta)
+admin.site.register(Viaje)
+admin.site.register(Lugar)
