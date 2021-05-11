@@ -22,15 +22,25 @@ class Insumo(models.Model):
     def __str__(self):
         return self.nombre+" "+self.descripcion
 
+class Lugar(models.Model):
+    localidad = models.CharField(max_length=150)
+    provincia = models.CharField(max_length=100)
+
+    class Meta:
+        unique_together = ('localidad', 'provincia',)
+
+    def __str__(self):
+        return (self.localidad+" "+self.provincia)
+
 class Ruta(models.Model):
-    origen = models.CharField(max_length=100)
-    destino = models.CharField(max_length=100)
+    origen = models.ForeignKey(Lugar, default=None, on_delete=models.CASCADE, related_name='origen')
+    destino = models.ForeignKey(Lugar, default=None, on_delete=models.CASCADE, related_name='destino')
 
     class Meta:
         unique_together = ('origen', 'destino',)
 
     def __str__(self):
-        return self.origen+" "+self.destino
+        return str(self.origen)+" "+str(self.destino)
 
 class Viaje(models.Model):
     descripcion = models.CharField(max_length=100)
@@ -47,14 +57,4 @@ class Viaje(models.Model):
 
 
     def __str__(self):
-        return (self.descripcion+" "+self.ruta.origen+" "+self.ruta.destino+" "+str(self.fecha))
-
-class Lugar(models.Model):
-    localidad = models.CharField(max_length=150)
-    provincia = models.CharField(max_length=100)
-
-    class Meta:
-        unique_together = ('localidad', 'provincia',)
-
-    def __str__(self):
-        return (self.localidad+" "+self.provincia)
+        return (self.descripcion+" "+str(self.ruta)+" "+str(self.fecha))
