@@ -1,13 +1,13 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, int_list_validator,ValidationError
-import datetime
+from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
 from users.models import Chofer
+import datetime
 
 # Create your models here.
 
 class Combi(models.Model):
     patente = models.CharField(max_length=10, unique=True, validators=[MinLengthValidator(6)])
-    tipo = models.CharField(choices={('chico','Chico'),('mediano', 'Mediano'),('grande','Grande')},max_length=10)
+    tipo = models.CharField(choices={('comoda','Comoda'),('super comoda', 'Super Comoda')},max_length=12)
     capacidad = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)])
 
     def __str__(self):  
