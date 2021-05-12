@@ -27,15 +27,6 @@ class CustomUser(AbstractUser):
 		return self.username
 
 class Chofer(models.Model):
-	user = models.OneToOneField(CustomUser,on_delete=models.CASCADE)
+	user = models.OneToOneField(CustomUser,on_delete=models.CASCADE, null=True)
 	dni = models.CharField(max_length=12,unique=True)
 	contacto = models.CharField(max_length=20)
-
-@receiver(models.signals.post_save,sender=CustomUser)
-def create_user_profile(sender,instance,created,**kwargs):
-	if created:
-		Chofer.objects.create(user=instance)
-
-@receiver(models.signals.post_save,sender=CustomUser)
-def save_user_profile(sender,instance,**kwargs):
-	instance.chofer.save()

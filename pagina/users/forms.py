@@ -12,6 +12,8 @@ class CustomUserCreationForm(UserCreationForm):
 		model = CustomUser
 		fields = (
 			'username',
+			'first_name', 
+			'last_name',
 			'email',
 			'password1',
 			'password2',
@@ -24,6 +26,7 @@ class CustomUserCreationForm(UserCreationForm):
 		if password1 and password2 and password1 != password2:
 			raise forms.ValidationError('Las contraseñas no coinciden')
 		return password2
+
 	def save(self,commit=True):
 		user = super(UserCreationForm,self).save(commit=False)
 		user.set_password(self.cleaned_data['password2'])
@@ -39,6 +42,8 @@ class CustomUserChangeForm(UserChangeForm):
 		model = CustomUser
 		fields = (
 			'username',
+			'first_name', 
+			'last_name',
 			'email',
 			'password1',
 			'password2',

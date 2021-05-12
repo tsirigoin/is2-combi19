@@ -1,5 +1,6 @@
 from django.db import models
-from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, MinLengthValidator, ValidationError
+from django.db.models.constraints import UniqueConstraint
 from users.models import Chofer
 import datetime
 
@@ -33,11 +34,23 @@ class Lugar(models.Model):
         return (self.localidad+" "+self.provincia)
 
 class Ruta(models.Model):
-    origen = models.ForeignKey(Lugar, default=None, on_delete=models.CASCADE,unique=True, related_name='origen')
-    destino = models.ForeignKey(Lugar, default=None, on_delete=models.CASCADE,unique=True, related_name='destino')
+    origen = models.ForeignKey(Lugar, default=None, on_delete=models.CASCADE, related_name='origen')
+    destino = models.ForeignKey(Lugar, default=None, on_delete=models.CASCADE, related_name='destino')
 
     class Meta:
         unique_together = ('origen', 'destino')
+
+    def clean(self, *args, **kwargs):
+        ori = self.origen
+        des = self.destino
+        if ori == des:
+            raise ValidationError("Origen y destino no pueden ser iguales")
+        return
+     
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super(Ruta, self).save(*args, **kwargs)
 
     def __str__(self):
         return str(self.origen)+" "+str(self.destino)
