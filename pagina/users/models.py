@@ -30,3 +30,5 @@ class Chofer(models.Model):
 	user = models.OneToOneField(CustomUser,on_delete=models.CASCADE, null=True)
 	dni = models.CharField(max_length=12,unique=True)
 	contacto = models.CharField(max_length=20)
+	def __str__(self):
+		return str(self.user)

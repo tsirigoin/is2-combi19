@@ -21,7 +21,7 @@ class Insumo(models.Model):
     cantidad = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)])
 
     def __str__(self):
-        return self.nombre+" "+self.descripcion
+        return self.nombre
 
 class Lugar(models.Model):
     localidad = models.CharField(max_length=150)
@@ -31,7 +31,7 @@ class Lugar(models.Model):
         unique_together = ('localidad', 'provincia',)
 
     def __str__(self):
-        return (self.localidad+" "+self.provincia)
+        return (self.localidad+", "+self.provincia)
 
 class Ruta(models.Model):
     origen = models.ForeignKey(Lugar, default=None, on_delete=models.CASCADE, related_name='origen')
@@ -53,7 +53,7 @@ class Ruta(models.Model):
         super(Ruta, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.origen)+" "+str(self.destino)
+        return str(self.origen)+" - "+str(self.destino)
 
 class Viaje(models.Model):
     descripcion = models.CharField(max_length=100)

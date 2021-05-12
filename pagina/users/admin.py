@@ -6,7 +6,7 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import Chofer, CustomUser
 
 class CustomUserAdmin(UserAdmin):
-    add_form = CustomUserCreationForm
+    # add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
     list_display = ('username', 'is_staff', 'is_active',)
@@ -23,6 +23,9 @@ class CustomUserAdmin(UserAdmin):
     )
     search_fields = ('username',)
     ordering = ('username',)
+    def get_form(self, request, obj=None, **kwargs):
+        form = super(CustomUserAdmin,self).get_form(request, obj, **kwargs)
+        return form
 
 admin.site.register(CustomUser)
 admin.site.register(Chofer)
