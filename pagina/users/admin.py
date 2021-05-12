@@ -2,15 +2,16 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 
+from django.utils.translation import ugettext_lazy as _
+
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import Chofer, CustomUser
 
 class CustomUserAdmin(UserAdmin):
-    # add_form = CustomUserCreationForm
+    #add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = CustomUser
-    list_display = ('username', 'is_staff', 'is_active',)
-    list_filter = ('username    ', 'is_staff', 'is_active',)
+
     fieldsets = (
         (None, {'fields': ('username','first_name', 'last_name','email','password1','password2','fecha_nacimiento')}),
         ('Permissions', {'fields': ('is_staff', 'is_active')}),
@@ -18,15 +19,16 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username','first_name', 'last_name','email','password1','password2','fecha_nacimiento','is_staff','is_active')}
+            'fields': ('username','first_name', 'last_name','email','password1','password2','fecha_nacimiento',)}
         ),
     )
     search_fields = ('username',)
     ordering = ('username',)
-    def get_form(self, request, obj=None, **kwargs):
-        form = super(CustomUserAdmin,self).get_form(request, obj, **kwargs)
-        return form
 
-admin.site.register(CustomUser)
+    def get_form(self, request, obj=None, **kwargs):
+         form = super(CustomUserAdmin,self).get_form(request, obj, **kwargs)
+         return form
+
+admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Chofer)
 admin.site.unregister(Group)
