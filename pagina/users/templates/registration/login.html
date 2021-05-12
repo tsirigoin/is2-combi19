@@ -9,6 +9,6 @@
 		{% csrf_token %}
 		{{form|crispy}}
 		<button type="submit" class="boton boton-exito">Iniciar Sesión</button>
-		<p>¿No tenés una cuenta? <a href="/registrarse">¡Registrate aquí!</a></p>
+		<p>¿No tenés una cuenta? <a href="{% url 'register'%}">¡Registrate aquí!</a></p>
 	</form>
 {% endblock content %}
