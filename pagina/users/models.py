@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator,ValidationError
 
 from .managers import CustomUserManager
 
@@ -22,6 +22,10 @@ class CustomUser(AbstractUser):
 	]
 
 	objects = CustomUserManager()
+
+	def clean(self):
+		if CustomUser.objects.filter(email=self.email).exclude(pk=self.pk).exists():
+			raise ValidationError({'email': _('El correo electrónico ingresado ya se encuentra en uso.')})
 
 	def __str__(self):
 		return self.username

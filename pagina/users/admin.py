@@ -9,7 +9,7 @@ from .models import Chofer, CustomUser
 
 class CustomUserAdmin(UserAdmin):
     #add_form = CustomUserCreationForm
-    form = CustomUserChangeForm
+    form = CustomUserCreationForm
     model = CustomUser
 
     fieldsets = (
@@ -29,6 +29,6 @@ class CustomUserAdmin(UserAdmin):
          form = super(CustomUserAdmin,self).get_form(request, obj, **kwargs)
          return form
 
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(CustomUser,CustomUserAdmin)
 admin.site.register(Chofer)
 admin.site.unregister(Group)

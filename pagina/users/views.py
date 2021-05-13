@@ -8,7 +8,7 @@ def register(response):
 		form = CustomUserCreationForm(response.POST)
 		if form.is_valid():
 			form.save()
-		return redirect('/')
+			return redirect('/')
 	else:
 		form = CustomUserCreationForm()
 	return render(response,'users/registro.html',{'form': form})
