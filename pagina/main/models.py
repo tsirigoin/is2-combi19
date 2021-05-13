@@ -66,7 +66,7 @@ class Viaje(models.Model):
     insumo = models.ManyToManyField(Insumo,blank=True)
 
     class Meta:
-        unique_together = ('chofer', 'fecha', 'ruta',)
+        unique_together = ('chofer', 'fecha','hora', 'ruta',)
 
 
     def __str__(self):

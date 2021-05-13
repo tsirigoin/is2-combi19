@@ -29,6 +29,7 @@ class CustomUserAdmin(UserAdmin):
          form = super(CustomUserAdmin,self).get_form(request, obj, **kwargs)
          return form
 
+
 admin.site.register(CustomUser,CustomUserAdmin)
 admin.site.register(Chofer)
 admin.site.unregister(Group)

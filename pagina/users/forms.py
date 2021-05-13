@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
+
 from .models import CustomUser
 
 class CustomUserCreationForm(UserCreationForm):
@@ -26,6 +27,7 @@ class CustomUserCreationForm(UserCreationForm):
 		if password1 and password2 and password1 != password2:
 			raise forms.ValidationError('Las contraseñas no coinciden')
 		return password2
+
 
 	def save(self,commit=True):
 		user = super(UserCreationForm,self).save(commit=False)
