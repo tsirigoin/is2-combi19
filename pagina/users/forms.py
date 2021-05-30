@@ -1,8 +1,10 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-
 from .models import CustomUser
+
+class CustomDateInput(forms.DateInput):
+	input_type = 'date'
 
 class CustomUserCreationForm(UserCreationForm):
 	password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
@@ -21,6 +23,9 @@ class CustomUserCreationForm(UserCreationForm):
 			'fecha_nacimiento',
 			'accept',
 		)
+		widgets = {
+			'fecha_nacimiento': CustomDateInput()
+		}
 	def clean_password2(self):
 		password1 = self.cleaned_data.get('password1')
 		password2 = self.cleaned_data.get('password2')
