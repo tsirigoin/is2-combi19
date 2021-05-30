@@ -16,3 +16,6 @@ def register(response):
 def logout(response):
 	logoutFunct(response)
 	return render(response,'registration/logout.html')
+
+def perfil(response):
+	return render(response,'users/perfil.html')
