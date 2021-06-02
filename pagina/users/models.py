@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinLengthValidator,ValidationError
 from datetime import date
@@ -41,3 +42,15 @@ class Chofer(models.Model):
 	contacto = models.CharField(max_length=20)
 	def __str__(self):
 		return str(self.user)
+
+class Perfil(models.Model):
+	user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+
+	@receiver(models.signals.post_save, sender = CustomUser)
+	def create_user_profile(sender, instance, created, **kwargs):
+		if created:
+			Perfil.objects.create(user = instance)
+	
+	@receiver(models.signals.post_save, sender = CustomUser)
+	def save_user_profile(sender, instance, **kwargs):
+		instance.perfil.save()

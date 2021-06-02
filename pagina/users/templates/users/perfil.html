@@ -2,10 +2,79 @@
 
 {% block title %}Perfil{% endblock title %}
 
-
-
 {% block content %}
-<p>
-Perfil!!!!
-	</p>
+
+{% load crispy_forms_tags %}
+
+<!-- Usuario -->
+
+<br />
+<br />
+<div class="container mx-auto">
+	<div class="row">
+		<div class="col-sm-12 col-md-12 col-lg-3 pb-4">
+			<div class="card p-4">
+				<h4 class="card-title font-weight-bold text-center">Bienvenido, {{ user.username|title }}</h4>
+				<hr>
+				<div class="card-text">
+					<p class="text-muted mb-0" style="font-size: 12px">Nombre de Usuario:</p>
+					<p>{{ user.username }}</p>
+					<p class="text-muted mb-0" style="font-size: 12px">Nombre:</p>
+					<p>{{ user.first_name }} {{ user.last_name }}</p>
+					<p class="text-muted mb-0" style="font-size: 12px">Correo Electrónico:</p>
+					<p>{{ user.email }}</p>
+					<div class="text-right">
+						<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#PerfilModal">Editar Perfil</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12 col-md-12 col-lg-9 pb-4">
+			<div class="row">
+				<div class="col-6 my-auto">
+					<h2 class="font-weight-bold pt-4">Viajes Programados</h2>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				{% for v in user.profile.programmed.all %}
+					<div class="col-sm-12 col-md-6 col-lg4 pb-4">
+						<div class="h-100">
+							<div class="card-body">
+								<h5 class="card-title">{{ v.str }}</h5>
+								<a href="{{ v.url_asociada }}" class="btn btn-warning">Ver Programa</a>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal de edición del perfil -->
+
+<div class="modal fade" tabindex="-1" id="PerfilModal" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Editar Perfil</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form method="post">
+					{% csrf_token %}
+					{{ user_form|crispy }}
+			</div>
+			<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Guardar cambios</button>
+				</form>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 {% endblock content %}

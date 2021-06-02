@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
-from .models import CustomUser
+from .models import CustomUser, Perfil
 
 class CustomDateInput(forms.DateInput):
 	input_type = 'date'
@@ -68,3 +68,8 @@ class CustomUserChangeForm(UserChangeForm):
 	
 	def clean_password(self):
 		return self.initial['password']
+
+class ProfileForm(forms.ModelForm):
+	class Meta:
+		model = Perfil
+		fields = ()
