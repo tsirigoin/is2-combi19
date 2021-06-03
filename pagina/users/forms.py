@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.forms import widgets
 
 from .models import CustomUser, Perfil
 
@@ -68,6 +69,19 @@ class CustomUserChangeForm(UserChangeForm):
 	
 	def clean_password(self):
 		return self.initial['password']
+
+class CustomUserEditForm(forms.ModelForm):
+	class Meta:
+		model = CustomUser
+		fields = (
+			'first_name',
+			'last_name',
+			'email',
+			'fecha_nacimiento',
+		)
+		widgets = {
+			'fecha_nacimiento': CustomDateInput()
+		}
 
 class ProfileForm(forms.ModelForm):
 	class Meta:
