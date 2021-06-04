@@ -84,6 +84,5 @@ class Viaje(models.Model):
     class Meta:
         unique_together = ('chofer', 'fecha','hora', 'ruta',)
 
-
     def __str__(self):
         return (self.descripcion+" "+str(self.ruta)+" "+str(self.fecha))
