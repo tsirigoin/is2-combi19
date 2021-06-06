@@ -68,3 +68,16 @@ class CustomUserChangeForm(UserChangeForm):
 	
 	def clean_password(self):
 		return self.initial['password']
+
+class CustomUserEditForm(forms.ModelForm):
+	class Meta:
+		model = CustomUser
+		fields = (
+			'first_name',
+			'last_name',
+			'email',
+			'fecha_nacimiento',
+		)
+		widgets = {
+			'fecha_nacimiento': CustomDateInput()
+		}

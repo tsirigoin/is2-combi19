@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as logoutFunct
-from .forms import CustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserEditForm
 
 # Create your views here.
 def register(response):
@@ -18,4 +18,7 @@ def logout(response):
 	return render(response,'registration/logout.html')
 
 def perfil(response):
-	return render(response,'users/perfil.html')
+	user_form = CustomUserEditForm(instance=response.user)
+	return render(response,'users/perfil.html',{'user': response.user,
+		'user_form': user_form,
+	})

@@ -22,7 +22,9 @@ class CustomUserAdmin(UserAdmin):
             'fields': ('username','first_name', 'last_name','email','password1','password2','fecha_nacimiento',)}
         ),
     )
-    search_fields = ('username',)
+    list_display = ('username','first_name','last_name','email','fecha_nacimiento')
+    search_fields = ('username','first_name','last_name','email')
+    readonly_fields = ('fecha_nacimiento',)
     ordering = ('username',)
 
     def get_form(self, request, obj=None, **kwargs):
