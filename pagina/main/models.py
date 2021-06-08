@@ -11,6 +11,9 @@ class Combi(models.Model):
     tipo = models.CharField(choices={('comoda','Comoda'),('super comoda', 'Super Comoda')},max_length=12)
     capacidad = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)])
 
+    def getCapacidad(self):
+        return self.capacidad
+
     def __str__(self):
         return self.patente
 
@@ -80,6 +83,12 @@ class Viaje(models.Model):
     insumo = models.ManyToManyField(Insumo,blank=True)
     pasajeros = models.ManyToManyField(Pasajero, blank=True)
     comentarios = models.ManyToManyField(Comentario, blank=True)
+    asientos = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)])
+
+    """def save(self, *args, **kwargs):
+        if self.asientos is None:
+            self.asientos = self.combi.getCapacidad
+        super(Viaje, self).save(*args, **kwargs)"""
 
     class Meta:
         unique_together = ('chofer', 'fecha','hora', 'ruta',)

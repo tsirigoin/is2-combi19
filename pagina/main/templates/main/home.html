@@ -35,7 +35,7 @@
         <div class="contenido">
           <form method="get">
             {{ filter.form.as_p }}
-            <button type="submit">Buscar</a></button>
+            <button type="submit">Buscar</button>
           </form>
         </div>
         {%for viaje in listaViaje %}
@@ -44,7 +44,9 @@
                   <span style="float:right">Fecha: {{viaje.fecha}}</span></p></h2>
             </button>
             <div class="contenido">
-                <h3 style="text-align:left" >{{viaje.descripcion}}<p style="text-align:right">${{viaje.precio}}</p></h3> 
+                <h3 style="text-align:left" >{{viaje.descripcion}}<p style="text-align:right">${{viaje.precio}}</p>
+                <button type="submit"><a href="{% url 'compra' vId=viaje.id %}">Comprar</a></button>
+                </h3> 
             </div>
         {% empty %}
           <p>No se encontro ningun viaje con esos criterios de busqueda.</p>
