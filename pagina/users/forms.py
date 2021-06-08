@@ -65,6 +65,9 @@ class CustomUserChangeForm(UserChangeForm):
 			'password2',
 			'fecha_nacimiento',
 		)
+		widgets = {
+			'fecha_nacimiento': CustomDateInput()
+		}
 	
 	def clean_password(self):
 		password1 = self.cleaned_data.get('password1')
@@ -73,8 +76,8 @@ class CustomUserChangeForm(UserChangeForm):
 			raise forms.ValidationError('Las contraseñas no coinciden.')
 		return password2
 
-class CustomUserEditForm(forms.ModelForm):
-	class Meta:
+class UserEditForm(CustomUserChangeForm):
+	class Meta(CustomUserChangeForm):
 		model = CustomUser
 		fields = (
 			'first_name',
@@ -85,3 +88,8 @@ class CustomUserEditForm(forms.ModelForm):
 		widgets = {
 			'fecha_nacimiento': CustomDateInput()
 		}
+	def __init__(self, *args, **kwargs):
+		super(CustomUserChangeForm,self).__init__(*args,**kwargs)
+		self.fields.pop('password')
+		self.fields.pop('password1')
+		self.fields.pop('password2')
