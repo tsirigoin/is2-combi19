@@ -77,6 +77,7 @@ class CustomUserChangeForm(UserChangeForm):
 		return password2
 
 class UserEditForm(CustomUserChangeForm):
+	fecha_nacimiento = forms.DateField(label='Fecha de Nacimiento',help_text='Ingrese la fecha en formato DD/MM/YYYY.')
 	class Meta(CustomUserChangeForm):
 		model = CustomUser
 		fields = (
@@ -85,9 +86,6 @@ class UserEditForm(CustomUserChangeForm):
 			'email',
 			'fecha_nacimiento',
 		)
-		widgets = {
-			'fecha_nacimiento': CustomDateInput()
-		}
 	def __init__(self, *args, **kwargs):
 		super(CustomUserChangeForm,self).__init__(*args,**kwargs)
 		self.fields.pop('password')
