@@ -8,8 +8,8 @@ from .forms import CustomUserCreationForm, CustomUserChangeForm
 from .models import Chofer, CustomUser
 
 class CustomUserAdmin(UserAdmin):
-    #add_form = CustomUserCreationForm
-    form = CustomUserCreationForm
+    add_form = CustomUserCreationForm
+    form = CustomUserChangeForm
     model = CustomUser
 
     fieldsets = (
@@ -24,7 +24,6 @@ class CustomUserAdmin(UserAdmin):
     )
     list_display = ('username','first_name','last_name','email','fecha_nacimiento')
     search_fields = ('username','first_name','last_name','email')
-    readonly_fields = ('fecha_nacimiento',)
     ordering = ('username',)
 
     def get_form(self, request, obj=None, **kwargs):
