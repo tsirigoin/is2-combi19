@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as logoutFunct
-from .forms import CustomUserCreationForm, UserEditForm,CustomComentarioForm
-from main.models import Viaje
+from .forms import CustomUserCreationForm, UserEditForm
+from main.forms import CustomComentarioForm
+from main.models import Viaje, Comentario
 
 # Create your views here.
 def register(response):
@@ -32,7 +33,25 @@ def perfil(response):
 		'user_form': user_form, 'viajes_finalizados': viajes_finalizados, 'viajes_pendientes': viajes_pendientes,
 	})
 
-	def comentarios(response):
-		viajes_finalizados = Viaje.objects.first()
-		comentarios = CustomComentarioForm()
-		return render(response, 'user/comentarios.html',{'viajes_finalizados': viajes_finalizados, 'comentarios': comentarios})
+def comentarios(response,viaje_id):
+		if response.method == 'POST':
+			form = CustomComentarioForm(response.POST)
+			if form.is_valid():
+				form.save()
+				return redirect('comentario', viaje_id)
+		else:
+			viajes = Viaje.objects.get(pk=viaje_id)
+			comentarios = CustomComentarioForm()
+			return render(response, 'users/comentarios.html',{'user': response.user, 'viajes': viajes,
+		 	'comentarios': comentarios })
+
+def eliminar_comentario(response, comentario_id):
+	comentario = Comentario.objects.get(id=comentario_id)
+	comentario.delete()
+	return redirect('perfil')
+
+#def modificar_comentario(response,comentario_id):
+
+	#return render(response,'users/perfil.html',{'user': response.user,
+	#	'user_form': user_form, 'viajes_finalizados': viajes_finalizados, 'viajes_pendientes': viajes_pendientes,
+	#})

@@ -13,7 +13,7 @@ class CustomUser(AbstractUser):
 	last_name = models.CharField(_('Apellido'),max_length=150)
 	last_login = models.DateTimeField(_('Última conexión'),auto_now=True)
 	fecha_nacimiento = models.DateField(_('Fecha de nacimiento'))
-	has_premium = models.BooleanField(_('Posee membresía premium'),default=False)
+	
 
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = [

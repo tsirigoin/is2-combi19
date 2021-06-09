@@ -55,12 +55,6 @@ class Ruta(models.Model):
     def __str__(self):
         return str(self.origen)+" - "+str(self.destino)
 
-class Comentario(models.Model):
-    usuario = models.ForeignKey(CustomUser, default=None, on_delete=models.CASCADE)
-    texto = models.CharField(max_length=100)
-
-    def __str__(self):
-        return (str(self.usuario)+" "+(self.texto))
 
 class Pasajero(models.Model):
     usuario = models.ForeignKey(CustomUser, default=None, on_delete=models.CASCADE)
@@ -79,10 +73,18 @@ class Viaje(models.Model):
     precio = models.DecimalField(default=None, max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     insumo = models.ManyToManyField(Insumo,blank=True)
     pasajeros = models.ManyToManyField(Pasajero, blank=True)
-    comentarios = models.ManyToManyField(Comentario, blank=True)
+
 
     class Meta:
         unique_together = ('chofer', 'fecha','hora', 'ruta',)
 
     def __str__(self):
         return (self.descripcion+" "+str(self.ruta)+" "+str(self.fecha))
+
+class Comentario(models.Model):
+    usuario = models.ForeignKey(CustomUser, default=None, on_delete=models.CASCADE)
+    texto = models.CharField(max_length=100)
+    viaje = models.ForeignKey(Viaje,blank=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return (str(self.usuario)+" "+str(self.viaje)+" "+(self.texto))

@@ -9,7 +9,7 @@ urlpatterns = [
     path('accounts/logout/', regviews.logout, name="logout"),
     path('accounts/perfil/', regviews.perfil, name="perfil"),
     url(r'^search/$', views.viaje_list, name='search'),
-    path('accounts/comentarios/', regviews.comentarios, name="comentario"),
-    #path('guardarComentario', regviews.crear_comentario, name="viaje"),
+    path('accounts/comentarios/<viaje_id>/', regviews.comentarios, name="comentario"),
+    path(r'accounts/comentarios/eliminar/<comentario_id>/', regviews.eliminar_comentario, name="eliminarcomentario"),
 
 ]

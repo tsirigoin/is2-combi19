@@ -18,26 +18,61 @@
 	      	<br>
 	      	<div class="row">
 				<!-- Aquí falta poner los valores correctos -->
-		      	{% for v in viajes_pendientes.all %}
 			    	<div class="col-sm-12 col-md-6 col-lg-4 pb-4">
 		                <div class="h-100">
 							<div class="card-body">
-		                  		<h5 class="card-title">{{ v.descripcion }}</h5>
-		                    	<p class="card-text text-muted" style="font-size:12px">{{ v.hora }}</p>
-                          <p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
-                          <p class="card-text text-muted" style="font-size:12px">'$'{{ v.precio }}</p>
-                          <p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
+		                  		<h5 class="card-title">{{ viajes.descripcion }}</h5>
+		                    	<p class="card-text text-muted" style="font-size:12px">{{ viajes.hora }}</p>
+                          <p class="card-text text-muted" style="font-size:12px">{{ viajes.fecha }}</p>
+                          <p class="card-text text-muted" style="font-size:12px">${{ viajes.precio }}</p>
+                          <p class="card-text text-muted" style="font-size:12px">{{ viajes.ruta }}</p>
+                          <div class="text-right">
+                            <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#comentarioModal">Agregar Comentario</button>
+                          </div>
 		                	</div>
 		              	</div>
 		            </div>
-		    	{% endfor %}
+                <div class="col-sm-12 col-md-12 col-lg-9 pb-4">
+          	    	<div class="row">
+          	    		<div class="col-6 my-auto">
+          	    			<h2 class="font-weight-bold pt-4">Lista de Comentarios</h2>
+          	    		</div>
+          	    	</div>
+          	      	<br>
+          	      	<div class="row">
+          				<!-- Aquí falta poner los valores correctos -->
+          		      	{% for c in viajes.comentario_set.all %}
+
+          			    	<div class="col-sm-12 col-md-6 col-lg-4 pb-4">
+          		                <div class="h-100">
+          							<div class="card-body">
+          		                    	<p class="card-text text-muted" style="font-size:12px">{{ c.usuario.username }}</p>
+                                    <p class="card-text text-muted" style="font-size:12px">{{ c.texto }}</p>
+                                    {%  if user == c.usuario %}
+                                    <div class="text-right">
+                                      <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#comentarioModal">Editar</button>
+                                    </div>
+                                    <form action="{% url 'eliminarcomentario' c.id %}" method="post">
+                                    	{% csrf_token %}
+                                      <div class="text-right">
+                                        <button type="submit" class="btn btn-outline-secondary btn-sm" >Eliminar</button>
+                                      </div>
+                                    </form>
+                                    {% endif %}
+          		                	</div>
+          		              	</div>
+          		            </div>
+          		    	{% endfor %}
+          	        </div>
+          	    </div>
 	        </div>
 	    </div>
+
 	</div>
 </div>
 
 <!-- Comentario Model -->
-<div class="modal fade" tabindex="-1" id="comentarModal" role="dialog">
+<div class="modal fade" tabindex="-1" id="comentarioModal" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 	      	<div class="modal-header">

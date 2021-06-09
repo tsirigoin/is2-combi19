@@ -88,13 +88,6 @@ class UserEditForm(CustomUserChangeForm):
 			'fecha_nacimiento',
 		)
 
-
-class CustomComentarioForm(forms.ModelForm):
-	class Meta:
-		model = Comentario
-		fields = (
-			'texto',
-		)
 	def __init__(self, *args, **kwargs):
 		super(CustomUserChangeForm,self).__init__(*args,**kwargs)
 		self.fields.pop('password')
