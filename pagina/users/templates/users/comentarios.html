@@ -1,0 +1,66 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+<!--User-->
+<br />
+<br />
+<div class="container mx-auto">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-9 pb-4">
+	    	<div class="row">
+	    		<div class="col-6 my-auto">
+	    			<h2 class="font-weight-bold pt-4">Comentarios del Viaje</h2>
+	    		</div>
+	    	</div>
+	      	<br>
+	      	<div class="row">
+				<!-- Aquí falta poner los valores correctos -->
+		      	{% for v in viajes_pendientes.all %}
+			    	<div class="col-sm-12 col-md-6 col-lg-4 pb-4">
+		                <div class="h-100">
+							<div class="card-body">
+		                  		<h5 class="card-title">{{ v.descripcion }}</h5>
+		                    	<p class="card-text text-muted" style="font-size:12px">{{ v.hora }}</p>
+                          <p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
+                          <p class="card-text text-muted" style="font-size:12px">'$'{{ v.precio }}</p>
+                          <p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
+		                	</div>
+		              	</div>
+		            </div>
+		    	{% endfor %}
+	        </div>
+	    </div>
+	</div>
+</div>
+
+<!-- Comentario Model -->
+<div class="modal fade" tabindex="-1" id="comentarModal" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+	      	<div class="modal-header">
+		        <h5 class="modal-title">Agregar Comentario</h5>
+		    	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		        	<span aria-hidden="true">&times;</span>
+		        </button>
+	        </div>
+	        <div class="modal-body">
+		        <form method="post">
+		          	{% csrf_token %}
+		          	{{ comentarios|crispy }}
+	        </div>
+	      	<div class="modal-footer">
+	        		<button type="submit" class="btn btn-primary">Agregar Comentario</button>
+	        	</form>
+	        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+	        </div>
+	    </div>
+  	</div>
+</div>
+
+
+
+
+{% endblock %}

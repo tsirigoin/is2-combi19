@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 from .models import CustomUser
+from main.models import Comentario
 
 class CustomDateInput(forms.DateInput):
 	input_type = 'date'
@@ -10,12 +11,12 @@ class CustomUserCreationForm(UserCreationForm):
 	password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
 	password2 = forms.CharField(label='Repita su contraseña',widget=forms.PasswordInput)
 	accept = forms.BooleanField(label="Acepto los Términos y Condiciones")
-	
+
 	class Meta(UserCreationForm):
 		model = CustomUser
 		fields = (
 			'username',
-			'first_name', 
+			'first_name',
 			'last_name',
 			'email',
 			'password1',
@@ -53,19 +54,19 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomUserChangeForm(UserChangeForm):
 	password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
 	password2 = forms.CharField(label='Repita su contraseña',widget=forms.PasswordInput)
-	
+
 	class Meta(UserChangeForm):
 		model = CustomUser
 		fields = (
 			'username',
-			'first_name', 
+			'first_name',
 			'last_name',
 			'email',
 			'password1',
 			'password2',
 			'fecha_nacimiento',
 		)
-	
+
 	def clean_password(self):
 		return self.initial['password']
 
@@ -81,3 +82,10 @@ class CustomUserEditForm(forms.ModelForm):
 		widgets = {
 			'fecha_nacimiento': CustomDateInput()
 		}
+
+class CustomComentarioForm(forms.ModelForm):
+	class Meta:
+		model = Comentario
+		fields = (			
+			'texto',
+		)
