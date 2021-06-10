@@ -59,9 +59,10 @@ class Ruta(models.Model):
 class Pasajero(models.Model):
     usuario = models.ForeignKey(CustomUser, default=None, on_delete=models.CASCADE)
     estado = models.CharField(choices={('reservado','Reservado'),('viajando','Viajando'),('finalizado','Finalizado')},max_length=12)
-
+    dni = models.CharField(max_length=10,default=None ,validators=[MinLengthValidator(6)])
+    
     def __str__(self):
-        return (str(self.usuario)+" "+(self.estado))
+        return (str(self.usuario)+" "+(self.estado) +" "+str(self.dni))
 
 class Viaje(models.Model):
     descripcion = models.CharField(max_length=100)
