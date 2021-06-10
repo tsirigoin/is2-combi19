@@ -45,4 +45,4 @@ class Chofer(models.Model):
 	dni = models.CharField(max_length=12,unique=True,validators=[MinLengthValidator(6)])
 	contacto = models.CharField(max_length=20)
 	def __str__(self):
-		return ("nombre: "+str(self.user)+", dni: "+str(self.dni)+", contacto: "+self.contacto)
+		return (str(self.user.first_name)+" "+str(self.user.last_name))

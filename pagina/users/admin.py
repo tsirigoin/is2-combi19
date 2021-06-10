@@ -30,7 +30,12 @@ class CustomUserAdmin(UserAdmin):
          form = super(CustomUserAdmin,self).get_form(request, obj, **kwargs)
          return form
 
-
 admin.site.register(CustomUser,CustomUserAdmin)
-admin.site.register(Chofer)
+@admin.register(Chofer)
+class ChoferAdmin(admin.ModelAdmin):
+    list_display = (
+        'user',
+        'dni',
+        'contacto',
+    )
 admin.site.unregister(Group)
