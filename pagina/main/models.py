@@ -12,7 +12,7 @@ class Combi(models.Model):
     capacidad = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)])
 
     def __str__(self):
-        return ("patente: "+self.patente+", tipo: "+self.tipo+", capacidad: "+str(self.capacidad)) 
+        return (self.patente)
 
 class Insumo(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
@@ -21,7 +21,7 @@ class Insumo(models.Model):
     cantidad = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)])
 
     def __str__(self):
-        return ("nombre: "+self.nombre+", descipcion: "+self.descripcion+", precio: "+str(self.precio)+", cantidad: "+str(self.cantidad))
+        return (self.nombre)
 
 class Lugar(models.Model):
     localidad = models.CharField(max_length=150)
@@ -62,7 +62,7 @@ class Pasajero(models.Model):
     dni = models.CharField(max_length=10,default=None ,validators=[MinLengthValidator(6)])
     
     def __str__(self):
-        return ("usuario: "+str(self.usuario)+" "+"estado: "+(self.estado) +" "+"dni: "+str(self.dni))
+        return (str(self.usuario)+" "+str(self.dni))
 
 class Viaje(models.Model):
     descripcion = models.CharField(max_length=100)

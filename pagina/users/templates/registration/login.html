@@ -10,5 +10,6 @@
 		{{form|crispy}}
 		<button type="submit" class="boton boton-exito">Iniciar Sesión</button>
 		<p>¿No tenés una cuenta? <a href="{% url 'register'%}">¡Registrate aquí!</a></p>
+		<p>¿No recuerdas tu contraseña? <a href="{% url 'password_reset' %}">Reestablécela.</a></p>
 	</form>
 {% endblock content %}
