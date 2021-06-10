@@ -12,5 +12,5 @@ urlpatterns = [
     path('accounts/comentarios/<viaje_id>/', regviews.comentarios, name="comentario"),
     path(r'accounts/comentarios/eliminar/<comentario_id>/', regviews.eliminar_comentario, name="eliminarcomentario"),
     path(r'accounts/comentarios/editar/<comentario_id>', regviews.modificar_comentario, name="editarcomentario"),
-    #path('accounts/comentarios/guardarcomentario/<viaje_id>/', regviews.comentarios_guardar, name="guardarcomentario"),
+    path(r'accounts/perfil/membresia/cambiar/',regviews.cambiar_membresia,name="cambiar_membresia"),
 ]

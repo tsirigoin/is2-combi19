@@ -13,7 +13,7 @@ class CustomUser(AbstractUser):
 	last_name = models.CharField(_('Apellido'),max_length=150)
 	last_login = models.DateTimeField(_('Última conexión'),auto_now=True)
 	fecha_nacimiento = models.DateField(_('Fecha de nacimiento'))
-	
+	has_premium = models.BooleanField(_('Posee membresía premium'),default=False)
 
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = [
@@ -32,9 +32,13 @@ class CustomUser(AbstractUser):
 		edad = today.year - self.fecha_nacimiento.year - ((today.month, today.day) < (self.fecha_nacimiento.month, self.fecha_nacimiento.day))
 		if edad <= 18:
 			raise ValidationError({'fecha_nacimiento': _('Debe ser mayor que 18')})
-
 	def __str__(self):
 		return self.username
+	def toggle_premium(self):
+		if self.has_premium:
+			self.has_premium = False
+		else:
+			self.has_premium = True
 
 class Chofer(models.Model):
 	user = models.OneToOneField(CustomUser,on_delete=models.CASCADE, null=True)
