@@ -23,12 +23,26 @@
   background-color: #f1f1f1;
 }
 
+.success{
+list-style: none;
+background-color: #2e6da4;
+color: white;
+text-align: center;
+}
+
 </style>
 
 {% extends 'main/base.html' %}
 
 {% block content_title %} Home {% endblock content_title %}
 {% block content %}
+        {% if messages %}
+        <ul class="messages">
+              {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+              {% endfor %}
+        </ul>
+        {% endif %}
         <button type="button"  class="viajeCollapse">
           <h2><p style="text-align:left"> Buscar </p></h2>
         </button>
@@ -44,10 +58,13 @@
                   <span style="float:right">Fecha: {{viaje.fecha}}</span></p></h2>
             </button>
             <div class="contenido">
-                <h3 style="text-align:left" >{{viaje.descripcion}}<p style="text-align:right">${{viaje.precio}}</p></h3> 
+                <h3 style="text-align:left" >{{viaje.descripcion}}<p style="text-align:right">${{viaje.precio}}</p></h3>
+                {% if user.is_authenticated%}
+                  <button type="submit"><a href="{% url 'compra' vId=viaje.id uName=user.username %}">Comprar</a></button>
+                {% endif %} 
             </div>
         {% empty %}
-          <p>No se encontro ningun viaje con esos criterios de busqueda.</p>
+          <p>No se encontro ningun viaje.</p>
         {% endfor %}
 
         <script>
