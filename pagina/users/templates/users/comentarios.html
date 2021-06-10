@@ -5,8 +5,6 @@
 {% load crispy_forms_tags %}
 
 <!--User-->
-<br />
-<br />
 <div class="container mx-auto">
     <div class="row">
       <div class="col-sm-12 col-md-12 col-lg-9 pb-4">
@@ -22,9 +20,13 @@
 		                <div class="h-100">
 							<div class="card-body">
 		                  		<h5 class="card-title">{{ viajes.descripcion }}</h5>
+                          <p class="text-muted mb-0" style="font-size: 12px">Hora de salida:</p>
 		                    	<p class="card-text text-muted" style="font-size:12px">{{ viajes.hora }}</p>
+                          <p class="text-muted mb-0" style="font-size: 12px">Fecha:</p>
                           <p class="card-text text-muted" style="font-size:12px">{{ viajes.fecha }}</p>
+                          <p class="text-muted mb-0" style="font-size: 12px">Precio:</p>
                           <p class="card-text text-muted" style="font-size:12px">${{ viajes.precio }}</p>
+                          <p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
                           <p class="card-text text-muted" style="font-size:12px">{{ viajes.ruta }}</p>
                           <div class="text-right">
                             <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target="#comentarioModal">Agregar Comentario</button>
@@ -46,14 +48,16 @@
           			    	<div class="col-sm-12 col-md-6 col-lg-4 pb-4">
           		                <div class="h-100">
           							<div class="card-body">
+                                    <p class="text-muted mb-0" style="font-size: 12px">Nombre de Usuario:</p>
           		                    	<p class="card-text text-muted" style="font-size:12px">{{ c.usuario.username }}</p>
+                                      <p class="text-muted mb-0" style="font-size: 12px">Comentario:</p>
                                     <p class="card-text text-muted" style="font-size:12px">{{ c.texto }}</p>
                                     {%  if user == c.usuario %}
                                     <a href="{% url 'editarcomentario' c.id %}">Editar comentarios</a>
                                     <form action="{% url 'eliminarcomentario' c.id %}" method="post">
                                     	{% csrf_token %}
                                       <div class="text-right">
-                                        <button type="submit" class="btn btn-outline-secondary btn-sm" >Eliminar</button>
+                                        <button type="submit" onclick="return confirm('Esta seguro?')" class="btn btn-outline-secondary btn-sm" >Eliminar</button>
                                       </div>
                                     </form>
                                     {% endif %}
