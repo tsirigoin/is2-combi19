@@ -13,7 +13,6 @@ def home(request):
 	filter = ProductFilter(request.GET, queryset = viajes)
 	if request is not None:
 		viajes = filter.qs
-		print(filter.qs)
 	return render(request, "main/home.html", {"listaViaje":viajes, 'filter' : filter})
 
 def viaje_list(request):
@@ -32,8 +31,9 @@ def compra(request,vId,uName):
 		if (dniPasajero is not None):
 			pas = Pasajero(usuario = user, estado = "reservado", dni = dniPasajero)
 			pas.save()
+			print(dniPasajero)
 			viaje.pasajeros.add(pas)
-			#viaje.save()
+			viaje.save()
 			compra = True
 	if compra:
 		messages.success(request, 'Compra realizada con exito')
