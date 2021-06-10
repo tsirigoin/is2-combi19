@@ -49,15 +49,18 @@
 	    	</div>
 	      	<br>
 	      	<div class="row">
-				<!-- Aquí falta poner los valores correctos -->
 		      	{% for v in viajes_pendientes.all %}
 			    	<div class="col-sm-12 col-md-6 col-lg-4 pb-4">
 		                <div class="h-100">
 							<div class="card-body">
 		                  		<h5 class="card-title">{{ v.descripcion }}</h5>
+                          <p class="text-muted mb-0" style="font-size: 12px">Hora de salida:</p>
 		                    	<p class="card-text text-muted" style="font-size:12px">{{ v.hora }}</p>
+                          <p class="text-muted mb-0" style="font-size: 12px">Fecha:</p>
                           <p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
+                          <p class="text-muted mb-0" style="font-size: 12px">Precio:</p>
                           <p class="card-text text-muted" style="font-size:12px">${{ v.precio }}</p>
+                          <p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
                           <p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
 		                	</div>
 		              	</div>
@@ -79,10 +82,13 @@
 		                <div class="h-100">
 							<div class="card-body">
 		                  		<h5 class="card-title">{{ v.descripcion }}</h5>
+                          <p class="text-muted mb-0" style="font-size: 12px">Hora de salida:</p>
 		                    	<p class="card-text text-muted" style="font-size:12px">{{ v.hora }}</p>
+                          <p class="text-muted mb-0" style="font-size: 12px">Fecha:</p>
                           <p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
+                          <p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
                           <p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
-                          <a href="{% url 'comentario' v.id %}">agregar comentarios</a>
+                          <a href="{% url 'comentario' v.id %}">comentarios</a>
 		                	</div>
 		              	</div>
 		            </div>
