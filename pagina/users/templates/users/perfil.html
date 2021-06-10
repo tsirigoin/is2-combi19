@@ -25,6 +25,19 @@
 					<div class="text-right">
 						<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#perfilModal">Editar Perfil</button>
 					</div>
+					<br />
+					<form action="{% url 'cambiar_membresia' %}" method="POST">
+						{% csrf_token %}
+						{% if user.has_premium %}
+						<div class="text-right">
+							<button type="submit" class="btn btn-outline-secondary btn-sm">Cancelar Gold</button>
+						</div>
+						{% else %}
+						<div class="text-right">
+							<button type="submit" class="btn btn-outline-secondary btn-sm">Contratar Gold</button>
+						</div>
+						{% endif %}
+					</form>
 		        </div>
 	    	</div>
 	  	</div>
@@ -43,9 +56,9 @@
 							<div class="card-body">
 		                  		<h5 class="card-title">{{ v.descripcion }}</h5>
 		                    	<p class="card-text text-muted" style="font-size:12px">{{ v.hora }}</p>
-                          <p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
-                          <p class="card-text text-muted" style="font-size:12px">'$'{{ v.precio }}</p>
-                          <p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
+                         		<p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
+                        		<p class="card-text text-muted" style="font-size:12px">'$'{{ v.precio }}</p>
+                        		<p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
 		                    	<a href="{{ p.url }}" class="btn btn-warning">Ver Viaje</a>
 		                	</div>
 		              	</div>
@@ -68,9 +81,9 @@
 							<div class="card-body">
 		                  		<h5 class="card-title">{{ v.descripcion }}</h5>
 		                    	<p class="card-text text-muted" style="font-size:12px">{{ v.hora }}</p>
-                          <p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
-                          <p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
-                          <a href="{% url 'comentario' v.id%}">agregar comentarios</a>
+                        		<p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
+                        		<p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
+                        		<a href="{% url 'comentario' v.id%}">agregar comentarios</a>
 		                	</div>
 		              	</div>
 		            </div>

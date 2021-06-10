@@ -33,6 +33,11 @@ def perfil(response):
 		'user_form': user_form, 'viajes_finalizados': viajes_finalizados, 'viajes_pendientes': viajes_pendientes,
 	})
 
+def cambiar_membresia(response):
+	response.user.toggle_premium()
+	response.user.save()
+	return redirect('perfil')
+
 def comentarios(response,viaje_id):
 		if response.method == 'POST':
 			form = CustomComentarioForm(response.POST)

@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^search/$', views.viaje_list, name='search'),
     path('accounts/comentarios/<viaje_id>/', regviews.comentarios, name="comentario"),
     path(r'accounts/comentarios/eliminar/<comentario_id>/', regviews.eliminar_comentario, name="eliminarcomentario"),
-
+    path(r'accounts/perfil/membresia/cambiar/',regviews.cambiar_membresia,name="cambiar_membresia"),
 ]
