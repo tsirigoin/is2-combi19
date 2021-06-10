@@ -34,24 +34,40 @@ def perfil(response):
 	})
 
 def comentarios(response,viaje_id):
-		if response.method == 'POST':
-			form = CustomComentarioForm(response.POST)
-			if form.is_valid():
-				form.save()
-				return redirect('comentario', viaje_id)
-		else:
-			viajes = Viaje.objects.get(pk=viaje_id)
-			comentarios = CustomComentarioForm()
-			return render(response, 'users/comentarios.html',{'user': response.user, 'viajes': viajes,
-		 	'comentarios': comentarios })
+	if response.method == 'POST':
+		form = CustomComentarioForm(response.POST)
+		if form.is_valid():
+			via = Viaje.objects.get(pk=viaje_id)
+			comentario = Comentario(usuario=response.user,
+									texto=form.cleaned_data['texto'],
+									viaje=via)
+			comentario.save()
+			return redirect('comentario', viaje_id)
+	else:
+		viajes = Viaje.objects.get(pk=viaje_id)
+		comentarios = CustomComentarioForm()
+		return render(response, 'users/comentarios.html',{'user': response.user, 'viajes': viajes,
+	 			'comentarios': comentarios })
+
+
 
 def eliminar_comentario(response, comentario_id):
 	comentario = Comentario.objects.get(id=comentario_id)
+	viaje_id = comentario.viaje.id
 	comentario.delete()
-	return redirect('perfil')
+	return redirect('comentario', viaje_id)
 
-#def modificar_comentario(response,comentario_id):
-
-	#return render(response,'users/perfil.html',{'user': response.user,
-	#	'user_form': user_form, 'viajes_finalizados': viajes_finalizados, 'viajes_pendientes': viajes_pendientes,
-	#})
+def modificar_comentario(response,comentario_id):
+	if response.method == 'POST':
+		form = CustomComentarioForm(response.POST)
+		if form.is_valid():
+			comentario = Comentario.objects.get(id=comentario_id)
+			comentario.texto= form.cleaned_data['texto']
+			comentario.save()
+			return redirect('editarcomentario', comentario_id)
+	else:
+		comen = Comentario.objects.get(id=comentario_id)
+		comentario = CustomComentarioForm(instance=comen)
+		return render(response,'users/comentario.html',{'user': response.user, 'com':comen,
+			'comentario': comentario,
+	})

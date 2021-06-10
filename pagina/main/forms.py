@@ -7,7 +7,5 @@ class CustomComentarioForm(forms.ModelForm):
 	class Meta:
 		model = Comentario
 		fields = (
-            'usuario',
 			'texto',
-            'viaje'
 		)

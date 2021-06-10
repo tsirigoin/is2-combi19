@@ -1,0 +1,58 @@
+{% extends "main/base.html" %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+<!--User-->
+<br />
+<br />
+<div class="container mx-auto">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-3 pb-4">
+	    	<div class="card p-4">
+		    	<h4 class="card-title font-weight-bold text-center">Comentario</h4>
+		      	<hr />
+		    	<div class="card-text">
+		    		<p class="text-muted mb-0" style="font-size: 12px">Nombre de Usuario:</p>
+		    		<p>{{ com.usuario }}</p>
+		    		<p class="text-muted mb-0" style="font-size: 12px">Texto:</p>
+			  		<p>{{ com.texto }}</p>
+					<div class="text-right">
+						<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#editarModal">Editar Comentario</button>
+					</div>
+		        </div>
+	    	</div>
+	  	</div>
+
+	</div>
+</div>
+
+<!-- Comentario Model -->
+<div class="modal fade" tabindex="-1" id="editarModal" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+	      	<div class="modal-header">
+		        <h5 class="modal-title">Editar Comentario</h5>
+		    	<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		        	<span aria-hidden="true">&times;</span>
+		        </button>
+	        </div>
+	        <div class="modal-body">
+		        <form method="post">
+		          	{% csrf_token %}
+		          	{{ comentario|crispy }}
+	        </div>
+	      	<div class="modal-footer">
+	        		<button type="submit" class="btn btn-primary">Editar Comentario</button>
+	        	</form>
+	        	<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+	        </div>
+	    </div>
+  	</div>
+</div>
+
+
+
+
+{% endblock %}

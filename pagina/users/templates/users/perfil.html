@@ -44,9 +44,8 @@
 		                  		<h5 class="card-title">{{ v.descripcion }}</h5>
 		                    	<p class="card-text text-muted" style="font-size:12px">{{ v.hora }}</p>
                           <p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
-                          <p class="card-text text-muted" style="font-size:12px">'$'{{ v.precio }}</p>
+                          <p class="card-text text-muted" style="font-size:12px">${{ v.precio }}</p>
                           <p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
-		                    	<a href="{{ p.url }}" class="btn btn-warning">Ver Viaje</a>
 		                	</div>
 		              	</div>
 		            </div>
@@ -70,7 +69,7 @@
 		                    	<p class="card-text text-muted" style="font-size:12px">{{ v.hora }}</p>
                           <p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
                           <p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
-                          <a href="{% url 'comentario' v.id%}">agregar comentarios</a>
+                          <a href="{% url 'comentario' v.id %}">agregar comentarios</a>
 		                	</div>
 		              	</div>
 		            </div>

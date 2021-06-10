@@ -49,9 +49,7 @@
           		                    	<p class="card-text text-muted" style="font-size:12px">{{ c.usuario.username }}</p>
                                     <p class="card-text text-muted" style="font-size:12px">{{ c.texto }}</p>
                                     {%  if user == c.usuario %}
-                                    <div class="text-right">
-                                      <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#comentarioModal">Editar</button>
-                                    </div>
+                                    <a href="{% url 'editarcomentario' c.id %}">Editar comentarios</a>
                                     <form action="{% url 'eliminarcomentario' c.id %}" method="post">
                                     	{% csrf_token %}
                                       <div class="text-right">
@@ -82,7 +80,7 @@
 		        </button>
 	        </div>
 	        <div class="modal-body">
-		        <form method="post">
+		        <form  method="post">
 		          	{% csrf_token %}
 		          	{{ comentarios|crispy }}
 	        </div>
