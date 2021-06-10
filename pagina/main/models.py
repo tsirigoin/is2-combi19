@@ -12,7 +12,7 @@ class Combi(models.Model):
     capacidad = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)])
 
     def __str__(self):
-        return self.patente
+        return ("patente: "+self.patente+", tipo: "+self.tipo+", capacidad: "+str(self.capacidad)) 
 
 class Insumo(models.Model):
     nombre = models.CharField(max_length=100, unique=True)
@@ -21,7 +21,7 @@ class Insumo(models.Model):
     cantidad = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(999)])
 
     def __str__(self):
-        return self.nombre
+        return ("nombre: "+self.nombre+", descipcion: "+self.descripcion+", precio: "+str(self.precio)+", cantidad: "+str(self.cantidad))
 
 class Lugar(models.Model):
     localidad = models.CharField(max_length=150)
