@@ -62,7 +62,7 @@ class Pasajero(models.Model):
     dni = models.CharField(max_length=10,default=None ,validators=[MinLengthValidator(6)])
     
     def __str__(self):
-        return (str(self.usuario)+" "+(self.estado) +" "+str(self.dni))
+        return ("usuario: "+str(self.usuario)+" "+"estado: "+(self.estado) +" "+"dni: "+str(self.dni))
 
 class Viaje(models.Model):
     descripcion = models.CharField(max_length=100)
