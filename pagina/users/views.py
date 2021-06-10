@@ -27,7 +27,7 @@ def perfil(response):
 			return redirect('perfil')
 	else:
 		user_form = UserEditForm(instance=response.user)
-		viajes_pendientes = Viaje.objects.filter(pasajeros__usuario=response.user).filter(pasajeros__estado='reservado')
+		viajes_pendientes = Viaje.objects.filter(pasajeros__usuario__pk=response.user.pk).filter(pasajeros__estado='reservado')
 		viajes_finalizados = Viaje.objects.filter(pasajeros__usuario=response.user).filter(pasajeros__estado='finalizado')
 	return render(response,'users/perfil.html',{'user': response.user,
 		'user_form': user_form, 'viajes_finalizados': viajes_finalizados, 'viajes_pendientes': viajes_pendientes,
