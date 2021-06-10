@@ -75,7 +75,6 @@ class Viaje(models.Model):
     insumo = models.ManyToManyField(Insumo,blank=True)
     pasajeros = models.ManyToManyField(Pasajero, blank=True)
 
-
     class Meta:
         unique_together = ('chofer', 'fecha','hora', 'ruta',)
 

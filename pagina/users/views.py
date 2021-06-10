@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout as logoutFunct
 from .forms import CustomUserCreationForm, UserEditForm
 from main.forms import CustomComentarioForm
-from main.models import Viaje, Comentario
+from main.models import Viaje, Comentario, Pasajero
+import datetime
+from django.contrib import messages
 
 # Create your views here.
 def register(response):
@@ -76,3 +78,13 @@ def modificar_comentario(response,comentario_id):
 		return render(response,'users/comentario.html',{'user': response.user, 'com':comen,
 			'comentario': comentario,
 	})
+
+def devolver_pasaje(response):
+	user = response.user
+	pasajero = Pasajero.objects.filter(usuario=user).first()
+	pasajero.delete()
+	if (datetime.date.today()+datetime.timedelta(hours=24)):
+		messages.success(response, 'Se le devolvio el 100% del precio del boleto')
+	else:
+		messages.success(response, 'Se le devolvio el 50% del precio del boleto')
+	return redirect('perfil')

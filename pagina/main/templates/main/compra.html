@@ -11,7 +11,7 @@
        }
     }
 
-    function addFields(){
+    function addFields(precio){
         // Number of inputs to create
         var number = document.getElementById("disponible").value;
         // Container <div> where dynamic content will be placed
@@ -22,16 +22,19 @@
         }
         for (i=0;i<number;i++){
             // Append a node with a random text
-            container.appendChild(document.createTextNode("Pasajero " + (i+1)));
+            container.appendChild(document.createTextNode(precio));
             // Create an <input> element, set its type and name attributes
             var input = document.createElement("input");
             input.type = "text";
             input.name = "pasajero" + i;
             input.required = "required";
+            input.value = "pasajero" + i;
+            input.hidden = true;
             container.appendChild(input);
             // Append a line break 
             container.appendChild(document.createElement("br"));
         }
+        container.appendChild(document.createTextNode("Total: "+precio*i));
         if (number > 0){
             var boton = document.createElement("input");
             boton.type = "submit";
@@ -55,7 +58,7 @@
 <hr>
 <p>Quedan disponibles {{total}}</p>
 <a>Cuantos asientos deasea ? </a><input type="number" id= "disponible" name="diponible" min=1 max={{total}}>
-<a href="#" id="filldetails" onclick="addFields()"><button>Confirmar asientos deseados</button></a> 
+<a href="#" id="filldetails" onclick="addFields({{viaje.precio}})"><button>Confirmar asientos deseados</button></a> 
 <a href="/">
     <button>Cancelar Compra</button>
 </a>

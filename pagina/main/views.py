@@ -25,11 +25,13 @@ def compra(request,vId,uName):
 	user = CustomUser.objects.filter(username=uName).first()
 	totalAsientos = viaje.combi.capacidad - viaje.pasajeros.count()
 	compra = False
+	print(request.POST.get("disponible"))
 	for i in range(totalAsientos):
 		#dni = request.POST.get("pasajero"+)
 		dniPasajero = request.POST.get("pasajero"+str(i)) #se que esto esta mal pero despues de que se me borro todo dije fue
+		print(dniPasajero)
 		if (dniPasajero is not None):
-			pas = Pasajero(usuario = user, estado = "reservado", dni = dniPasajero)
+			pas = Pasajero(usuario = user, estado = "reservado", dni = i)
 			pas.save()
 			print(dniPasajero)
 			viaje.pasajeros.add(pas)
