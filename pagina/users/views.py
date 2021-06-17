@@ -88,11 +88,13 @@ def modificar_comentario(response,comentario_id):
 			'comentario': comentario,
 	})
 	
-def devolver_pasaje(response):
+def devolver_pasaje(response, vId):
 	user = response.user
+	viaje = Viaje.objects.filter(id=vId).first()
 	pasajero = Pasajero.objects.filter(usuario=user).first()
 	pasajero.delete()
-	if (datetime.date.today()+datetime.timedelta(hours=24)):
+	print(viaje.fecha > (datetime.date.today()+datetime.timedelta(hours=24)))
+	if (viaje.fecha >(datetime.date.today()+datetime.timedelta(hours=24))):
 		messages.success(response, 'Se le devolvio el 100% del precio del boleto')
 	else:
 		messages.success(response, 'Se le devolvio el 50% del precio del boleto')

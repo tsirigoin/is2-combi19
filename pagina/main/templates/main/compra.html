@@ -1,6 +1,19 @@
 {% extends 'main/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
+<style>
+    .principal{
+        background-color: #777;
+        color: white;
+        cursor: pointer;
+        padding: 400 px;
+        width: 100%;
+        border: none;
+        text-align: center;
+        outline: none;
+        font-size: 15px;
+    }
+</style>
 <script type='text/javascript'>
 
     function clicked() {
@@ -17,32 +30,40 @@
         // Container <div> where dynamic content will be placed
         var container = document.getElementById("container");
         // Clear previous contents of the container
+        var total = document.getElementById("disponible").max;
+
         while (container.hasChildNodes()) {
             container.removeChild(container.lastChild);
         }
-        for (i=0;i<number;i++){
-            // Append a node with a random text
-            container.appendChild(document.createTextNode(precio));
-            // Create an <input> element, set its type and name attributes
-            var input = document.createElement("input");
-            input.type = "text";
-            input.name = "pasajero" + i;
-            input.required = "required";
-            input.value = "pasajero" + i;
-            input.hidden = true;
-            container.appendChild(input);
-            // Append a line break 
-            container.appendChild(document.createElement("br"));
+        if(number > total){
+            container.appendChild(document.createTextNode("No hay tantos asientos disponibles"));
         }
-        container.appendChild(document.createTextNode("Total: "+precio*i));
-        if (number > 0){
-            var boton = document.createElement("input");
-            boton.type = "submit";
-            boton.name = "comprar";
-            boton.id = "Comprar"
-            boton.value = "Confirma Compra";
-            //boton.onclick = "clicked()";
-            container.appendChild(boton);
+        else{
+            for (i=0;i<number;i++){
+                // Append a node with a random text
+                container.appendChild(document.createTextNode(precio));
+                // Create an <input> element, set its type and name attributes
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "pasajero" + i;
+                input.required = "required";
+                input.value = "pasajero" + i;
+                input.hidden = true;
+                container.appendChild(input);
+                // Append a line break 
+                container.appendChild(document.createElement("br"));
+            }
+            container.appendChild(document.createTextNode("Total: "+precio*i));
+            
+            if ((number > 0) && (number <= total )){
+                var boton = document.createElement("input");
+                boton.type = "submit";
+                boton.name = "comprar";
+                boton.id = "Comprar"
+                boton.value = "Confirma Compra";
+                //boton.onclick = "clicked()";
+                container.appendChild(boton);
+            }
         }
     }
 </script>
@@ -56,6 +77,7 @@
 </h1>
 <br>
 <hr>
+<p id = principal>
 <p>Quedan disponibles {{total}}</p>
 <a>Cuantos asientos deasea ? </a><input type="number" id= "disponible" name="diponible" min=1 max={{total}}>
 <a href="#" id="filldetails" onclick="addFields({{viaje.precio}})"><button>Confirmar asientos deseados</button></a> 
@@ -66,4 +88,5 @@
     {% csrf_token %}
     <div id="container"/>
 </form>
+</p>
 {% endblock content %}

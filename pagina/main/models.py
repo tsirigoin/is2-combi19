@@ -66,7 +66,7 @@ class Pasajero(models.Model):
 
 class Viaje(models.Model):
     descripcion = models.CharField(max_length=100)
-    fecha = models.DateField(validators=[MinValueValidator(datetime.date.today()+datetime.timedelta(hours=24))])
+    fecha = models.DateField(validators=[MinValueValidator(datetime.date.today())])
     hora = models.TimeField(default=None)
     ruta =  models.ForeignKey(Ruta, default=None, on_delete=models.CASCADE)
     chofer = models.ForeignKey(Chofer, default=None, on_delete=models.CASCADE)

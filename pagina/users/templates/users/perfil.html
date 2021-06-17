@@ -77,10 +77,10 @@
 									<p class="card-text text-muted" style="font-size:12px">${{ v.precio }}</p>
 									<p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
 									<p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
-									<form action="{% url 'devolver_pasaje' %}" method="post">
+									<form action="{% url 'devolver_pasaje' vId=v.id %}" method="post">
 									{% csrf_token %}
 						  			<div class="text-right">
-										<button type="submit" onclick="return confirm('Esta seguro?')" class="btn btn-outline-secondary btn-sm" >Devolver Pasaje</button>
+										<button type="submit" value={{v.id}} onclick="return confirm('Esta seguro?')" class="btn btn-outline-secondary btn-sm" >Devolver Pasaje</button>
 						  			</div>
 								</form>
 		                	</div>
