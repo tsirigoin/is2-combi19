@@ -1,5 +1,5 @@
 from django.contrib.auth.forms import PasswordResetForm
-from django.http import request, HttpResponse
+from django.http import HttpResponse
 from django.core.mail import send_mail, BadHeaderError
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as logoutFunct
