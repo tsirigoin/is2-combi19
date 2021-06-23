@@ -31,6 +31,15 @@ def logout(response):
 	return render(response,'registration/logout.html')
 
 def perfil(response):
+	viajes_pendientes = Viaje.objects.filter(pasajeros__usuario=response.user, pasajeros__estado='reservado')#.first()
+	viajes_finalizados = Viaje.objects.filter(pasajeros__usuario=response.user, pasajeros__estado='finalizado')
+	return render(response,'users/perfil.html',{
+		'user': response.user,
+		'viajes_finalizados': viajes_finalizados,
+		'viajes_pendientes': viajes_pendientes,
+	})
+
+def editar_perfil(response):
 	if response.method == 'POST':
 		user_form = UserEditForm(response.POST,instance=response.user)
 		if user_form.is_valid():
@@ -38,10 +47,9 @@ def perfil(response):
 			return redirect('perfil')
 	else:
 		user_form = UserEditForm(instance=response.user)
-		viajes_pendientes = Viaje.objects.filter(pasajeros__usuario=response.user, pasajeros__estado='reservado')#.first()
-		viajes_finalizados = Viaje.objects.filter(pasajeros__usuario=response.user, pasajeros__estado='finalizado')
-	return render(response,'users/perfil.html',{'user': response.user,
-		'user_form': user_form, 'viajes_finalizados': viajes_finalizados, 'viajes_pendientes': viajes_pendientes,
+	return render(response,'users/editar_perfil.html',{
+		'user': response.user,
+		'user_form': user_form,
 	})
 
 def cambiar_membresia(response):

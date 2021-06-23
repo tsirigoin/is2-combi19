@@ -1,12 +1,15 @@
+{% extends "main/base.html" %}
+
+{% block stylesheets %}
 <style>
-.success{
-	list-style: none;
-	background-color: #2e6da4;
-	color: white;
-	text-align: center;
+	.success{
+		list-style: none;
+		background-color: #2e6da4;
+		color: white;
+		text-align: center;
 	}
 </style>
-{% extends "main/base.html" %}
+{% endblock stylesheets %}
 
 {% block content %}
 
@@ -38,7 +41,7 @@
 					<p class="text-muted mb-0" style="font-size: 12px">Fecha de Nacimiento:</p>
 					<p>{{ user.fecha_nacimiento }}</p>
 					<div class="text-right">
-						<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#perfilModal">Editar Perfil</button>
+						<a role="button" class="btn btn-outline-primary btn-sm" href="{% url 'editar_perfil' %}">Editar Perfil</a>
 					</div>
 					<br />
 					<form action="{% url 'cambiar_membresia' %}" method="POST">
@@ -119,7 +122,7 @@
 	</div>
 </div>
 
-<!-- Profile Edit Modal -->
+<!-- Profile Edit Modal
 <div class="modal fade" tabindex="-1" id="perfilModal" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -141,8 +144,8 @@
 	        </div>
 	    </div>
   	</div>
-</div>
+</div> -->
 
 
 
-{% endblock %}
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+
+<!-- Espacio para añadir hojas de estilo de ser necesarias -->
+
+<!-- Contenido -->
+{% block title %}
+Editar Perfil
+{% endblock title %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+<form method="POST" class="form-group">
+	{% csrf_token %}
+	{{ user_form |crispy }}
+	<button type="submit" class="btn btn-outline-primary">Guardar cambios</button>
+</form>
+
+{% endblock content %}
