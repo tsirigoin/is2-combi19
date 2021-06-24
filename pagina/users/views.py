@@ -1,8 +1,9 @@
-from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
 from django.http import HttpResponse
 from django.core.mail import send_mail, BadHeaderError
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as logoutFunct
+from django.contrib.auth import update_session_auth_hash
 from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_encode
@@ -52,6 +53,19 @@ def editar_perfil(response):
 		'user_form': user_form,
 	})
 
+def cambiar_contraseña(response):
+	if response.method == 'POST':
+		pass_form = PasswordChangeForm(response.user,response.POST)
+		if pass_form.is_valid():
+			user = pass_form.save()
+			update_session_auth_hash(response,user)
+			return redirect('perfil')
+	else:
+		pass_form = PasswordChangeForm(response.user)
+	return render(response,'users/cambiar_contraseña.html',{
+		'pass_form': pass_form
+	})
+
 def cambiar_membresia(response):
 	response.user.toggle_premium()
 	response.user.save()
@@ -72,8 +86,6 @@ def comentarios(response,viaje_id):
 		comentarios = CustomComentarioForm()
 		return render(response, 'users/comentarios.html',{'user': response.user, 'viajes': viajes,
 	 			'comentarios': comentarios })
-
-
 
 def eliminar_comentario(response, comentario_id):
 	comentario = Comentario.objects.get(id=comentario_id)

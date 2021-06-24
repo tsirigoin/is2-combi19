@@ -3,7 +3,7 @@
 <!-- Espacio para añadir hojas de estilo de ser necesarias -->
 
 <!-- Contenido -->
-{% block title %}Editar Perfil{% endblock title %}
+{% block title %}Cambiar Contraseña{% endblock title %}
 
 {% block content %}
 
@@ -11,10 +11,9 @@
 
 <form method="POST" class="form-group">
 	{% csrf_token %}
-	{{ user_form |crispy }}
-	<button type="submit" class="btn btn-outline-success">Guardar cambios</button>
+	{{ pass_form |crispy }}
+	<button type="submit" class="btn btn-outline-primary">Guardar</button>
 </form>
 <a role="button" class="btn btn-outline-secondary" href="{% url 'perfil' %}">Cancelar</a>
-<a role="button" class="btn btn-outline-warning" href="{% url 'cambiar_contraseña' %}">Cambiar contraseña</a>
 
 {% endblock content %}
