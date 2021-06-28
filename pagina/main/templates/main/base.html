@@ -46,7 +46,10 @@
 			<div class= "sidebar">
 				<a href="/">Inicio</a>
 				{% if user.is_staff %}
-					<a href="/admin">Admin</a>
+					<a href="/admin">Panel de Administración</a>
+				{% endif %}
+				{% if user.chofer %}
+					<a href="/chofer">Panel Chofer</a>
 				{% endif %}
 				{% if user.is_authenticated %}
 					<a href="{% url 'perfil'%}">{{user.username}}</a>

@@ -40,6 +40,12 @@ def perfil(response):
 		'viajes_pendientes': viajes_pendientes,
 	})
 
+def chofer(response):
+	viajes_pendientes = Viaje.objects.filter(chofer__user=response.user)
+	return render(response,'users/chofer.html',{
+		'viajes_pendientes': viajes_pendientes,
+	})
+
 def editar_perfil(response):
 	if response.method == 'POST':
 		user_form = UserEditForm(response.POST,instance=response.user)
@@ -119,6 +125,30 @@ def devolver_pasaje(response, vId):
 	else:
 		messages.success(response, 'Se le devolvio el 50% del precio del boleto')
 	return redirect('perfil')
+
+def cancelar_viaje(response, vId):
+	viaje = Viaje.objects.get(id=vId)
+	for p in viaje.pasajeros.all():
+		associated_user = p.usuario
+		if associated_user:
+			subject = "Viaje "+str(viaje)+" cancelado"
+			email_template_name = "users/viaje_cancelado_email.txt"
+			c = {
+				"email": associated_user.email,
+				"site_name": 'COMBI-19',
+				"viaje_nom": str(viaje),
+			}
+			email = render_to_string(email_template_name,c)
+			try:
+				send_mail(subject,email,'viajes@combi19.com',[associated_user.email],fail_silently=False)
+			except BadHeaderError:
+				return HttpResponse('Header inválido detectado.')
+		p.delete()
+	viaje.delete()
+	return redirect('cancelacion_exitosa')
+
+def cancelacion_exitosa(response):
+	return render(response,'users/cancelacion_exitosa.html')
 	
 def password_reset_request(response):
 	if response.method == 'POST':

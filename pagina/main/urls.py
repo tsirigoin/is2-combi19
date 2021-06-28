@@ -22,4 +22,7 @@ urlpatterns = [
     path('accounts/password_reset/',regviews.password_reset_request,name='password_reset'),
     path('accounts/perfil/editar', regviews.editar_perfil, name="editar_perfil"),
     path('accounts/perfil/cambiar_contraseña',regviews.cambiar_contraseña,name='cambiar_contraseña'),
+    path('chofer',regviews.chofer,name='chofer'),
+    url(r'chofer/cancelar_viaje(?P<vId>[0-9]+)',regviews.cancelar_viaje,name='cancelar_viaje'),
+    path('chofer/cancelar_viaje/cancelacion_exitosa',regviews.cancelacion_exitosa,name='cancelacion_exitosa'),
 ]
