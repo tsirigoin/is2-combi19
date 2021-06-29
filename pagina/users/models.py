@@ -39,6 +39,12 @@ class CustomUser(AbstractUser):
 			self.has_premium = False
 		else:
 			self.has_premium = True
+	
+	def is_premium (self):
+		if self.has_premium:
+			return True
+		else:
+			return False
 
 class Chofer(models.Model):
 	user = models.OneToOneField(CustomUser,on_delete=models.CASCADE, null=True)

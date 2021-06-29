@@ -103,3 +103,36 @@ class Comentario(models.Model):
 
     def __str__(self):
         return (str(self.usuario)+" "+str(self.viaje)+" "+(self.texto))
+
+class TestPasajero (models.Model):
+    usuario = models.ForeignKey(CustomUser, default=None, on_delete=models.CASCADE)
+    viaje = models.ForeignKey(Viaje,blank=True, on_delete=models.CASCADE)
+    estado = models.CharField(choices={('positivo','Positivo'),('negativo','Negativo')},max_length=12)
+
+class Order(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+    
+    pasajes = models.ManyToManyField(Viaje)
+
+    #insumos = models.ManyToManyField(Insumo)
+
+    def __str__(self):
+        return self.user.username
+
+    def get_total(self):
+        total = 0
+        for order_item in self.items.all():
+            total += order_item.get_final_price()
+        if self.coupon:
+            total -= self.coupon.amount
+        return total
+
+    def cancelar_order(self):
+        for pasaje in self.pasajes.all():
+            id = pasaje.id
+            pasaje_del = Pasajero.objects.get(id=id)
+            pasaje_del.delete()
+        """for insumo in self.insumos.all():
+            id = insumo.id
+            insumo_del = Insumo.objects.get(id=id)
+            insumo_del.delete()"""

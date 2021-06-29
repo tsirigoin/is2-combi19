@@ -41,3 +41,6 @@ def compra(request,vId,uName):
 		messages.success(request, 'Compra realizada con exito')
 		return redirect("/")
 	return render(request, "main/compra.html", {"viaje": viaje, "total":totalAsientos})
+
+def checkout(request):
+	return render(request, "main/checkout.html")
