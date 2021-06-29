@@ -32,8 +32,8 @@ def logout(response):
 	return render(response,'registration/logout.html')
 
 def perfil(response):
-	viajes_pendientes = Viaje.objects.filter(pasajeros__usuario=response.user, pasajeros__estado='reservado')#.first()
-	viajes_finalizados = Viaje.objects.filter(pasajeros__usuario=response.user, pasajeros__estado='finalizado')
+	viajes_pendientes = Viaje.objects.filter(pasajeros__usuario=response.user, pasajeros__estado='reservado')
+	viajes_finalizados = Viaje.objects.filter(Q(pasajeros__usuario=response.user) and ~Q(pasajeros__estado='reservado'))
 	return render(response,'users/perfil.html',{
 		'user': response.user,
 		'viajes_finalizados': viajes_finalizados,
@@ -41,9 +41,11 @@ def perfil(response):
 	})
 
 def chofer(response):
-	viajes_pendientes = Viaje.objects.filter(chofer__user=response.user)
+	viajes_pendientes = Viaje.objects.filter(chofer__user=response.user,estado='reservado')
+	historial = Viaje.objects.filter(~Q(estado='reservado')).exclude(~Q(chofer__user=response.user))
 	return render(response,'users/chofer.html',{
 		'viajes_pendientes': viajes_pendientes,
+		'historial': historial,
 	})
 
 def editar_perfil(response):
@@ -143,9 +145,31 @@ def cancelar_viaje(response, vId):
 				send_mail(subject,email,'viajes@combi19.com',[associated_user.email],fail_silently=False)
 			except BadHeaderError:
 				return HttpResponse('Header inválido detectado.')
-		p.delete()
-	viaje.delete()
+		p.cancelar()
+		p.save()
+	viaje.cancelar()
+	viaje.save()
 	return redirect('cancelacion_exitosa')
+
+def viaje_en_curso(response, vId):
+	viaje = Viaje.objects.get(id=vId)
+	for p in viaje.pasajeros.all():
+		if p.estado == 'reservado':
+			p.en_curso()
+			p.save()
+	viaje.en_curso()
+	viaje.save()
+	return redirect('chofer')
+
+def finalizar_viaje(response, vId):
+	viaje = Viaje.objects.get(id=vId)
+	for p in viaje.pasajeros.all():
+		if p.estado == 'viajando':
+			p.finalizar()
+			p.save()
+	viaje.finalizar()
+	viaje.save()
+	return redirect('chofer')
 
 def cancelacion_exitosa(response):
 	return render(response,'users/cancelacion_exitosa.html')

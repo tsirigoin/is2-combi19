@@ -31,6 +31,5 @@ class ComentarioAdmin(admin.ModelAdmin):
 class PasajeroAdmin(admin.ModelAdmin):
 	list_display = (
 		'usuario',
-		'estado',
 		'dni',
 	)

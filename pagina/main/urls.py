@@ -25,4 +25,6 @@ urlpatterns = [
     path('chofer',regviews.chofer,name='chofer'),
     url(r'chofer/cancelar_viaje(?P<vId>[0-9]+)',regviews.cancelar_viaje,name='cancelar_viaje'),
     path('chofer/cancelar_viaje/cancelacion_exitosa',regviews.cancelacion_exitosa,name='cancelacion_exitosa'),
+    url(r'chofer/viaje_en_curso(?P<vId>[0-9]+)',regviews.viaje_en_curso,name='viaje_en_curso'),
+    url(r'chofer/finalizar_viaje(?P<vId>[0-9]+)',regviews.finalizar_viaje,name='finalizar_viaje'),
 ]
