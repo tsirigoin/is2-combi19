@@ -1,0 +1,64 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<br />
+<br />
+<div class="container mx-auto">
+	<div class="row">
+		<div class="col-sm-12 col-md-12 col-lg-5 pb-4">
+			<div class="card p-4">
+				<h4 class="card-title font-weight-bold text-center">{{ viaje.descripcion }}</h4>
+				<hr />
+				<div class="card-text">
+					<p class="text-muted mb-0" style="font-size: 12px">Hora de salida:</p>
+					<p>{{ viaje.hora }}</p>
+					<p class="text-muted mb-0" style="font-size: 12px">Fecha:</p>
+					<p>{{ viaje.fecha }}</p>
+					<p class="text-muted mb-0" style="font-size: 12px">Precio:</p>
+					<p>${{ viaje.precio }}</p>
+					<p class="text-muted mb-0" style="font-size: 12px">Estado:</p>
+					<p>{{ viaje.estado.title }}</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-12 col-md-12 col-lg-5 pb-4">
+			<div class="row">
+				<div class="col-6 my-auto">
+					<h2 class="font-weight-bold pt-4">Listado de Pasajeros</h2>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				{% for p in viaje.pasajeros.all %}
+					<div class="col-sm-12 col-md-6 col-lg-6 pb-4">
+						<div class="h-100">
+							<div class="card p-4">
+								<h4 class="card-title font-weight-bold text-center">Pasajero</h4>
+								<hr />
+								<div class="card-body">
+									<p class="text-muted mb-0" style="font-size: 12px">Usuario:</p>
+									<p>{{ p.usuario }}</p>
+									<p class="text-muted mb-0" style="font-size: 12px">DNI:</p>
+									<p>{{ p.dni }}</p>
+									<p class="text-muted mb-0" style="font-size: 12px">Test:</p>
+									<p>PLACEHOLDER</p>
+									<p class="text-muted mb-0" style="font-size: 12px">Estado:</p>
+									<p>{{ p.estado.title }}</p>
+									<form action="{% url 'pasaje_perdido' vId=viaje.id pId=p.id %}" method="post">
+										{% csrf_token %}
+										<div class="text-center">
+											<button type="submit" value={{p.id}} onclick="return confirm('¿Está seguro? Esta acción no puede deshacerse.')" class="btn btn-outline-danger btn-sm">Marcar como Ausente</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

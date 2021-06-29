@@ -79,6 +79,12 @@ def cambiar_membresia(response):
 	response.user.save()
 	return redirect('perfil')
 
+def ver_viaje(response,vId):
+	viaje = Viaje.objects.get(id=vId)
+	return render(response,'users/ver_viaje.html',{
+		'viaje': viaje,
+	})
+
 def comentarios(response,viaje_id):
 	if response.method == 'POST':
 		form = CustomComentarioForm(response.POST)
@@ -94,6 +100,12 @@ def comentarios(response,viaje_id):
 		comentarios = CustomComentarioForm()
 		return render(response, 'users/comentarios.html',{'user': response.user, 'viajes': viajes,
 	 			'comentarios': comentarios })
+
+def pasaje_perdido(response,vId,pId):
+	pasaje = Pasajero.objects.get(id=pId)
+	pasaje.perdido()
+	pasaje.save()
+	return redirect(response,'chofer',vId,pId)
 
 def eliminar_comentario(response, comentario_id):
 	comentario = Comentario.objects.get(id=comentario_id)
