@@ -16,12 +16,12 @@
 </style>
 <script type='text/javascript'>
 
-    function clicked() {
-       if (confirm('Do you want to submit?')) {
-           yourformelement.submit();
-       } else {
-           return false;
-       }
+    function test (precio,user, test){
+        var container = document.getElementById("container");
+        while (container.hasChildNodes()) {
+            container.removeChild(container.lastChild);
+        }
+        container.appendChild(document.createTextNode(test));
     }
 
     function addFields(precio, user){
@@ -42,7 +42,7 @@
             container.appendChild(document.createElement("br"));
             for (i=0;i<number;i++){
                 // Append a node with a random text
-                container.appendChild(document.createTextNode("Pasajero "+ (i+1) + " :"));
+                container.appendChild(document.createTextNode("Pasajero "+ (i+1) + ": "));
                 // Create an <input> element, set its type and name attributes
                 var input = document.createElement("input");
                 input.type = "text";
@@ -59,12 +59,63 @@
 
             
             if ((parseInt(number) > 0) && (parseInt(number) <= parseInt(total) )){
+                
+                container.appendChild(document.createElement("br"));  
+                container.appendChild(document.createTextNode("Ingrese numero de tarjeta: "));
+                var numT = document.createElement("input");
+                numT.type = "text";
+                numT.name = "numT";
+                numT.required = "required";
+                numT.minLength = 16;
+                numT.placeholder = "Numero de tarjeta";
+                container.appendChild(numT);
+                container.appendChild(document.createElement("br"));  
+
+                container.appendChild(document.createTextNode("Ingrese fecha de vencimiento: "));
+                var codT = document.createElement("input");
+                codT.type = "month";
+                codT.name = "fechaT";
+                codT.required = "required";
+                codT.min="2021-06";
+                container.appendChild(codT);
+
+                container.appendChild(document.createTextNode(" Codigo de seguridad: "));
+                var codT = document.createElement("input");
+                codT.type = "text";
+                codT.name = "codT";
+                codT.required = "required";
+                codT.minLength = 3;
+                codT.placeholder = "Numero de tarjeta";
+                container.appendChild(codT);
+                container.appendChild(document.createElement("br")); 
+
+                container.appendChild(document.createTextNode("Desea guardar la tarjeta? "));
+                container.appendChild(document.createTextNode("Si "));
+                var radio1 = document.createElement("input");
+                radio1.type = "radio";
+                radio1.id="si";
+                radio1.name = "guardado";
+                radio1.required = "required";
+                radio1.value="si";
+                radio1.checked = true;
+                container.appendChild(radio1);
+                container.appendChild(document.createTextNode("No "));
+                var radio2 = document.createElement("input");
+                radio2.type = "radio";
+                radio2.id="no";
+                radio2.name = "guardado";
+                radio2.required = "required";
+                radio2.value="no";
+                container.appendChild(radio2);
+                container.appendChild(document.createElement("br")); 
+
                 if(user == "True"){
                     container.appendChild(document.createTextNode("Total: "+ (parseInt(precio)*parseInt(number)*0.7) + " (Descuento aplicado) "));
                 }
                 else{
                     container.appendChild(document.createTextNode("Total: "+ parseInt(precio)*parseInt(number)));
                 }
+
                 container.appendChild(document.createElement("br"));
                 var boton = document.createElement("input");
                 boton.type = "submit";
@@ -95,13 +146,16 @@
             <div class= "col-xs-4">
                 <input type="number" id= "disponible" name="diponible" min=1 max={{total}}>
             </div>
-            <a href="#" id="filldetails" onclick="addFields('{{viaje.precio}}','{{user.is_premium}}')">
+            <a >
                 <br>
                 <div class= "col-xs-4">
-                <button class = "btn btn-success">Confirmar asientos deseados</button>
-                <a class="btn btn-danger" href="{% url 'home' %}" role="button">Cancelar Compra</a>
+                <button class = "btn btn-success" onclick="addFields('{{viaje.precio}}','{{user.is_premium}}')">Pago con nueva tarjeta</button>
+                <button class = "btn btn-success" onclick="test('{{viaje.precio}}','{{user.is_premium}}','{{user.tarjetas.all}}')">Pago con tarjeta guardad</button>
                 </div>
             </a> 
+            <div class="col-sm-12">
+            <a class="btn btn-danger" href="{% url 'home' %}" role="button">Cancelar Compra</a>
+        </div>
             <form method="POST">
                 {% csrf_token %}
                 <div id="container"/>

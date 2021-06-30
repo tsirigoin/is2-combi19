@@ -47,26 +47,27 @@
 										<div class="text-right">
 											<a role="button" class="btn btn-outline-danger btn-sm" href="{% url 'pasaje_perdido' vId=viaje.id pId=p.id %}">Marcar como Ausente</a>
 										</div>
-										{% endif %}
+									{% endif %}
 									{% for t in test.all %}
 										{% if t.pasajero == p %}
 											<p class="text-muted mb-0" style="font-size: 12px">Test:</p>
-											<p>{{ t.estado }}</p>										
-											<div class="text-right">
-												<a role="button" class="btn btn-outline-primary btn-sm" href="{% url 'editar_test' test_id=t.id %}">Editar Test</a>
-											</div>
-											<div class="text-right">
-												<a role="button" class="btn btn-outline-danger btn-sm" href="{% url 'eliminar_test' test_id=t.id %}">Eliminar Test</a>
-											</div>
+											<p>{{ t.estado.title }}</p>
+											{% if p.estado == 'reservado' %}
+												<div class="text-right">
+													<a role="button" class="btn btn-outline-primary btn-sm" href="{% url 'editar_test' test_id=t.id %}">Editar Test</a>
+												</div>
+												<div class="text-right">
+													<a role="button" class="btn btn-outline-danger btn-sm" href="{% url 'eliminar_test' test_id=t.id %}">Eliminar Test</a>
+												</div>
+											{% endif %}
 										{% endif %}
 									{% endfor %}
-										<br />
+									<br />
+									{% if p.estado == 'reservado' and not p.test %}
 										<div class="text-right">
 											<a role="button" class="btn btn-outline-primary btn-sm" href="{% url 'test' viaje_id=viaje.id pasajero_id=p.id %}">Cargar Test</a>
 										</div>
-										<br />
-
-
+									{% endif %}
 								</div>
 							</div>
 						</div>

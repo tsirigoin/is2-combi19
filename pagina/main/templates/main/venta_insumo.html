@@ -1,0 +1,113 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<style>
+    .principal{
+        background-color: #777;
+        color: white;
+        cursor: pointer;
+        padding: 400 px;
+        width: 100%;
+        border: none;
+        text-align: center;
+        outline: none;
+        font-size: 15px;
+    }
+</style>
+<script type='text/javascript'>
+
+    function clicked() {
+       if (confirm('Do you want to submit?')) {
+           yourformelement.submit();
+       } else {
+           return false;
+       }
+    }
+
+    function addFields(precio, user){
+        // Number of inputs to create
+        var number = document.getElementById("1").value;
+        // Container <div> where dynamic content will be placed
+        var container = document.getElementById("container");
+        // Clear previous contents of the container
+        var total = document.getElementById("disponible").max;
+
+        while (container.hasChildNodes()) {
+            container.removeChild(container.lastChild);
+        }
+        //if (parseInt(total) < parseInt(number)){
+        //    container.appendChild(document.createTextNode("No hay tantos asientos disponibles"));
+        //}
+        //else{
+            container.appendChild(document.createElement("br"));
+            for (i=0;i<number;i++){
+                // Append a node with a random text
+                container.appendChild(document.createTextNode("Pasajero "+ (i+1) + " :"));
+                // Create an <input> element, set its type and name attributes
+                var input = document.createElement("input");
+                input.type = "text";
+                input.name = "pasajero" + i;
+                input.required = "required";
+                input.minLength = 6;
+                input.placeholder = "DNI del pasajero";
+                //input.value = "pasajero" + i;
+                //input.hidden = true;
+                container.appendChild(input);
+                // Append a line break 
+                container.appendChild(document.createElement("br"));
+           // }
+
+            
+            if ((parseInt(number) > 0) && (parseInt(number) <= parseInt(total) )){
+                if(user == "True"){
+                    container.appendChild(document.createTextNode("Total: "+ (parseInt(precio)*parseInt(number)*0.7) + " (Descuento aplicado) "));
+                }
+                else{
+                    container.appendChild(document.createTextNode("Total: "+ parseInt(precio)*parseInt(number)));
+                }
+                container.appendChild(document.createElement("br"));
+                var boton = document.createElement("input");
+                boton.type = "submit";
+                boton.name = "comprar";
+                boton.id = "Comprar"
+                boton.value = "Confirma Compra";
+                //boton.onclick = "clicked()";
+                container.appendChild(boton);
+            }
+        }
+    }
+</script>
+<h1>
+    <p style="text-align:left"> 
+        Compra Insumos {{viaje.ruta.origen}} - {{viaje.ruta.destino}}
+        <span style="float:right"
+            >Fecha: {{viaje.fecha}}
+        </span>
+    </p>
+</h1>
+<br>
+<hr>
+<div class="text-center">
+    <div class="card">
+        <p id = principal>
+            <h2>Insumos disponibles</h2>
+            <p>{{viaje.insumo.all}}</p>
+            {%for insumo in viaje.insumo.all%}
+                <p>Nombre: {{insumo.nombre}}  ${{insumo.precio}} Dantidad deseada: <input type="number" id={{insumo.id}} name="diponible" value=0 min="0" max={{insumo.cantidad}} required>  Disponibles: {{insumo.cantidad}}</p>
+            {%endfor%}
+        
+        </p>
+        <a href="#" id="filldetails" onclick="addFields('{{viaje.precio}}','{{user.is_premium}}')">
+            <div class= "col-xs-4">
+            <button class = "btn btn-success">Confirmar insumos deseados</button>
+            <a class="btn btn-danger" href="{% url 'home' %}" role="button">Cancelar Compra</a>
+            </div>
+        </a> 
+        <form method="POST">
+            {% csrf_token %}
+            <div id="container"/>
+        </form>
+    </p>
+    </div>
+</div>
+{% endblock content %}

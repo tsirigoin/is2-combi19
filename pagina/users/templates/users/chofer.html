@@ -66,7 +66,7 @@
 					<div class="col-sm-12 col-md-6 col-lg-4 pb-4">
 						<div class="h-100">
 							<div class="card-body">
-								<h5 class="card-title">{{ h.descripcion }}</h5>
+								<h5 class="card-title"><a href="{% url 'ver_viaje' vId=h.id %}">{{ h.descripcion }}</a></h5>
 								<p class="text-muted mb-0" style="font-size: 12px">Hora de salida:</p>
 								<p class="card-text text-muted" style="font-size: 12px">{{ h.hora }}</p>
 								<p class="text-muted mb-0" style="font-size: 12px">Fecha:</p>

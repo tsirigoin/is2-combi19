@@ -30,10 +30,10 @@ urlpatterns = [
     url(r'chofer/viaje_en_curso(?P<vId>[0-9]+)',regviews.viaje_en_curso,name='viaje_en_curso'),
     url(r'chofer/finalizar_viaje(?P<vId>[0-9]+)',regviews.finalizar_viaje,name='finalizar_viaje'),
 	url(r'chofer/ver_viaje(?P<vId>[0-9]+)',regviews.ver_viaje,name='ver_viaje'),
-	path(r'chofer/ver_viaje(?P<vId>[0-9]+)/pasaje(?P<pId>[0-9]+)',regviews.pasaje_perdido,name='pasaje_perdido'),
+	path('chofer/ver_viaje(?P<vId>[0-9]+)/pasaje(?P<pId>[0-9]+)',regviews.pasaje_perdido,name='pasaje_perdido'),
     path('checkout/', views.checkout, name = "checkout"),
-    path(r'chofer/(?P<viaje_id>[0-9]+)/cargar_test(?P<pasajero_id>[0-9]+)',regviews.test, name="test"),
-    path(r'chofer/editar_test(?P<test_id>[0-9]+)',regviews.editar_test, name="editar_test"),
-    path(r'chofer/eliminar_test(?P<test_id>[0-9]+)',regviews.eliminar_test, name="eliminar_test"),
+    url(r'chofer/(?P<viaje_id>[0-9]+)/cargar_test(?P<pasajero_id>[0-9]+)',regviews.test, name="test"),
+    url(r'chofer/editar_test(?P<test_id>[0-9]+)',regviews.editar_test, name="editar_test"),
+    url(r'chofer/eliminar_test(?P<test_id>[0-9]+)',regviews.eliminar_test, name="eliminar_test"),
 
 ]
