@@ -259,6 +259,27 @@ def test(response, viaje_id, pasajero_id):
 			user = Pasajero.objects.get(pk=pasajero_id)
 			return render(response, 'users/test.html',{'usuario': user, 'viaje': viajes })
 
+def compra_en_persona (request,vId,uName):
+	viaje = Viaje.objects.get(id=vId)
+	user = CustomUser.objects.get(username=uName)
+	totalAsientos = viaje.combi.capacidad - viaje.pasajeros.count()
+	compra = False
+	print(request.POST.get("disponible"))
+	for i in range(totalAsientos):
+		#dni = request.POST.get("pasajero"+)
+		dniPasajero = request.POST.get("pasajero"+str(i)) #se que esto esta mal pero despues de que se me borro todo dije fue
+		print(dniPasajero)
+		if (dniPasajero is not None):
+			pas = Pasajero(usuario = user, dni = dniPasajero)
+			pas.save()
+			print(dniPasajero)
+			viaje.pasajeros.add(pas)
+			viaje.save()
+			compra = True
+	if compra:
+		messages.success(request, 'Compra realizada con exito')
+		return redirect("/chofer")
+	return render(request, "users/compra_en_persona.html", {"viaje": viaje, "total":totalAsientos})
 def editar_test(response,test_id):
 	if response.method == 'POST':
 		form = response.POST
