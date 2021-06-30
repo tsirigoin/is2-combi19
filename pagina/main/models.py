@@ -62,7 +62,7 @@ class Pasajero(models.Model):
     dni = models.CharField(max_length=10,default=None ,validators=[MinLengthValidator(6)])
 
     def __str__(self):
-        return (str(self.usuario)+" "+str(self.dni))
+        return (str(self.usuario))
     def cancelar(self):
         self.estado = 'cancelado'
     def en_curso(self):
