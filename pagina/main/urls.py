@@ -14,6 +14,7 @@ urlpatterns = [
     path(r'accounts/comentarios/eliminar/<comentario_id>/', regviews.eliminar_comentario, name="eliminarcomentario"),
     path(r'accounts/comentarios/editar/<comentario_id>', regviews.modificar_comentario, name="editarcomentario"),
     path(r'accounts/perfil/membresia/cambiar/',regviews.cambiar_membresia,name="cambiar_membresia"),
+    path(r'accounts/perfil/membresia/contratar/',regviews.contratar_membresia,name="contratar_membresia"),
     url(r'accounts/comentarios/devolver (?P<vId>[0-9]+)', regviews.devolver_pasaje, name="devolver_pasaje"),
     url(r"^compra/(?P<vId>[0-9]+) (?P<uName>\w+)/", views.compra, name="compra"),
     path('accounts/password_reset/done/',auth_views.PasswordResetDoneView.as_view(template_name='password/password_reset_done.html'),name='password_reset_done'),

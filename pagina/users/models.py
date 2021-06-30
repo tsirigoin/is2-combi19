@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinLengthValidator,ValidationError
 from datetime import date
+import datetime
 
 from .managers import CustomUserManager
 
@@ -14,6 +15,7 @@ class CustomUser(AbstractUser):
 	last_login = models.DateTimeField(_('Última conexión'),auto_now=True)
 	fecha_nacimiento = models.DateField(_('Fecha de nacimiento'))
 	has_premium = models.BooleanField(_('Posee membresía premium'),default=False)
+	fecha_vencimiento = models.DateField(_('Fecha de vencimiento'))
 
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = [
@@ -39,7 +41,7 @@ class CustomUser(AbstractUser):
 			self.has_premium = False
 		else:
 			self.has_premium = True
-	
+
 	def is_premium (self):
 		if self.has_premium:
 			return True

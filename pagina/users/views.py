@@ -14,7 +14,9 @@ from .models import CustomUser
 from main.forms import CustomComentarioForm
 from main.models import Viaje, Comentario, Pasajero, Test
 import datetime
+from datetime import date, timedelta
 from django.contrib import messages
+from dateutil.relativedelta import relativedelta
 
 # Create your views here.
 def register(response):
@@ -280,17 +282,36 @@ def compra_en_persona (request,vId,uName):
 		messages.success(request, 'Compra realizada con exito')
 		return redirect("/chofer")
 	return render(request, "users/compra_en_persona.html", {"viaje": viaje, "total":totalAsientos})
+
 def editar_test(response,test_id):
 	if response.method == 'POST':
+		cant = 0
 		form = response.POST
 		test = Test.objects.get(id=test_id)
-		test.temperatura= (form['test_temperatura'])
-		if form['test_estado'] == 'estadoPosi':
-			test.estado = "positivo"
+		if 	float(form['test_temperatura'])< 38:
+			if form['fiebre']=='fiebreSi':
+				cant= cant + 1
+			if form['difResp']=='difRespSi':
+				cant= cant + 1
+			if form['olfato']=='olfatoSi':
+				cant= cant + 1
+			if form['dolor']=='dolorSi':
+				cant= cant + 1
+			if cant<2:
+				test.temperatura = form['test_temperatura']
+				test.estado = 'negativo'
+				test.save()
+				return redirect('editar_test', test_id)
+			else:
+				test.temperatura = form['test_temperatura'],
+				test.estado = 'positivo'
+				test.save()
+				return redirect('editar_test', test_id)
 		else:
-			test.estado = "negativo"
-		test.save()
-		return redirect('editar_test', test_id)
+			test.temperatura = form['test_temperatura'],
+			test.estado = 'positivo'
+			test.save()
+			return redirect('editar_test', test_id)
 	else:
 		test = Test.objects.get(id=test_id)
 		return render(response,'users/ver_test.html',{'user': response.user, 'test':test,
@@ -301,3 +322,27 @@ def eliminar_test(response, test_id):
 	viaje_id = test.viaje.id
 	test.delete()
 	return redirect('ver_viaje', viaje_id)
+
+def contratar_membresia(response):
+	if response.method == 'POST':
+		form = response.POST
+		usuario = CustomUser.objects.get(username=response.user.username)
+		hoy = datetime.date.today()
+		if form['periodo']=='uno':
+			un_mes= hoy + relativedelta(months=+1)
+			usuario.fecha_vencimiento = un_mes
+		if form['periodo']=='tres':
+			tres_mes= hoy + relativedelta(months=+3)
+			usuario.fecha_vencimiento = tres_mes
+		if form['periodo']=='seis':
+			seis_mes= hoy + relativedelta(months=+6)
+			usuario.fecha_vencimiento = seis_mes
+		if form['periodo']=='doce':
+			doce_mes= hoy + relativedelta(months=+12)
+			usuario.fecha_vencimiento = doce_mes
+		usuario.has_premium = True
+		usuario.save()
+		return redirect('perfil')
+	else:
+		return render(response,'users/premium.html',{'user': response.user,
+})

@@ -1,0 +1,51 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<main >
+    <div class="container wow fadeIn">
+      <h2 class="my-5 h2 text-center">Contratar Gold </h2>
+        <div class="md-8 mb-4 text-center">
+          <div class="card">
+            <form method="POST" class="card-body">
+              {% csrf_token %}
+
+              <h3>Seleccione un periodo para contratar su membresia GOLD </h3>
+                <div class='test_form'>
+                    <label for="test_usuario" class="">Valor mes Premium $250 </label>
+
+                    <p>
+                    <div class="md-form mb-5">
+                        <label for="test_usuario" class="">Periodo de 1 mes Total $250</label>
+                        <input type="radio" name="periodo" value="uno" required>
+                    </div>
+                    </p>
+
+                    <p>
+                    <div class="md-form mb-5">
+                        <label for="test_usuario" class="">Periodo de 3 meses Total $750</label>
+                        <input type="radio" name="periodo" value="tres" required>
+                    </div>
+                    </p>
+
+                    <p>
+                        <div class="md-form mb-5">
+                            <label for="test_usuario" class="">Periodo de 6 meses Total $1500</label>
+                            <input type="radio" name="periodo" value="seis" >
+                        </div>
+                    </p>
+
+                    <p>
+                    <div class="md-form mb-5">
+                        <label for="test_usuario" class="">Periodo de 12 meses Total $3000</label>
+                        <input type="radio" name="periodo" value="doce" required>
+                    </div>
+                    </p>
+
+                </div>
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Comprar Suscripcion Gold</button>
+            </form>
+        </div>
+</main>
+{% endblock content %}
