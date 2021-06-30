@@ -81,8 +81,9 @@ def cambiar_membresia(response):
 
 def ver_viaje(response,vId):
 	viaje = Viaje.objects.get(id=vId)
+	tests = Test.objects.filter(viaje__id=vId)
 	return render(response,'users/ver_viaje.html',{
-		'viaje': viaje,
+		'viaje': viaje, 'test': tests
 	})
 
 def comentarios(response,viaje_id):
@@ -103,9 +104,9 @@ def comentarios(response,viaje_id):
 
 def pasaje_perdido(response,vId,pId):
 	pasaje = Pasajero.objects.get(id=pId)
-	pasaje.perdido()
+	pasaje.estado= 'perdido'
 	pasaje.save()
-	return redirect(response,'chofer',vId,pId)
+	return redirect('ver_viaje', vId)
 
 def eliminar_comentario(response, comentario_id):
 	comentario = Comentario.objects.get(id=comentario_id)
@@ -213,45 +214,69 @@ def password_reset_request(response):
 	password_reset_form = PasswordResetForm()
 	return render(request=response,template_name='password/password_reset.html',context={'password_reset_form': password_reset_form})
 
-def test(response, viaje_id):
+def test(response, viaje_id, pasajero_id):
 		if response.method == 'POST':
 			cant = 0
 			form = response.POST
-			if 	float(form['test_temperatura'])<= 38:
+			if 	float(form['test_temperatura'])< 38:
 				if form['fiebre']=='fiebreSi':
 					cant= cant + 1
 				if form['difResp']=='difRespSi':
 					cant= cant + 1
 				if form['olfato']=='olfatoSi':
 					cant= cant + 1
+				if form['dolor']=='dolorSi':
+					cant= cant + 1
 				if cant<2:
 					test= Test(
-						pasajero = Pasajero.objects.get(pk=viaje_id),
+						pasajero = Pasajero.objects.get(pk=pasajero_id),
 						viaje = Viaje.objects.get(pk=viaje_id),
 						temperatura = form['test_temperatura'],
 						estado = 'negativo'
 					)
 					test.save()
-					return redirect('test', viaje_id)
+					return redirect('ver_viaje', viaje_id)
 				else:
 					test= Test(
-						pasajero = Pasajero.objects.get(pk=viaje_id),
+						pasajero = Pasajero.objects.get(pk=pasajero_id),
 						viaje = Viaje.objects.get(pk=viaje_id),
 						temperatura = form['test_temperatura'],
 						estado = 'positivo'
 					)
 					test.save()
-					return redirect('test', viaje_id)
+					return redirect('ver_viaje', viaje_id)
 			else:
 				test= Test(
-					pasajero = Pasajero.objects.get(pk=viaje_id),
+					pasajero = Pasajero.objects.get(pk=pasajero_id),
 					viaje = Viaje.objects.get(pk=viaje_id),
 					temperatura = form['test_temperatura'],
 					estado = 'positivo'
 				)
 				test.save()
-				return redirect('test', viaje_id)
+				return redirect('ver_viaje', viaje_id)
 		else:
 			viajes = Viaje.objects.first()
-			user = Pasajero.objects.get(pk=1)
+			user = Pasajero.objects.get(pk=pasajero_id)
 			return render(response, 'users/test.html',{'usuario': user, 'viaje': viajes })
+
+def editar_test(response,test_id):
+	if response.method == 'POST':
+		form = response.POST
+		test = Test.objects.get(id=test_id)
+		test.temperatura= (form['test_temperatura'])
+		if form['test_estado'] == 'estadoPosi':
+			test.estado = "positivo"
+		else:
+			test.estado = "negativo"
+		test.save()
+		return redirect('editar_test', test_id)
+	else:
+		test = Test.objects.get(id=test_id)
+		return render(response,'users/ver_test.html',{'user': response.user, 'test':test,
+	})
+
+def eliminar_test(response, test_id):
+	test = Test.objects.get(pk=test_id)
+	viaje_id = test.viaje.id
+	test.delete()
+	return redirect('ver_viaje', viaje_id)

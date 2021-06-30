@@ -1,0 +1,48 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<main >
+    <div class="container wow fadeIn">
+      <h2 class="my-5 h2 text-center">Test de pasajero</h2>
+        <div class="md-8 mb-4 text-center">
+          <div class="card">
+            <form method="POST" class="card-body">
+              {% csrf_token %}
+
+              <h3>Editar Test del usuario {{test.pasajero}}</h3>
+                <div class='test_form'>
+
+                  <div class="md-form mb-5">
+                      <input type='hidden' placeholder='{{ usuario.id }}'id='pasajero_id' name='pasajero_id' class='form-control' />
+                  </div>
+
+                  <div class="md-form mb-5">
+                      <input type='hidden' placeholder='{{ viaje.id }}' id='viaje_id' name='test_temperatura' class='form-control' />
+                  </div>
+
+                    <div class="md-form mb-5">
+                        <label for="test_temperatura" class="">Temperatura {{test.pasajero}}</label>
+                        <input type='number' placeholder='{{test.temperatura}}'id='test_temperatura' step="0.1" name='test_temperatura' class='form-control' />
+                    </div>
+
+                    <div class="md-form mb-5">
+                        <label for="test_estado" class="">Estado</label>
+                        <br/>
+                        {% if test.estado == "positivo" %}
+                            <input type='radio' placeholder=''id='test_estado' value="estadoPosi" name='test_estado' checked/>positivo
+                            <input type='radio' placeholder=''id='test_estado' value="estadoNega" name='test_estado' />negativo
+                          {% else %}
+                            <input type='radio' placeholder=''id='test_estado' value="estadoPosi" name='test_estado' />positivo
+                            <input type='radio' placeholder=''id='test_estado' value="estadoNega" name='test_estado' checked/>negativo
+                          {% endif %}
+                    </div>
+
+
+                </div>
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Guardar Test</button>
+            </form>
+        </div>
+</main>
+{% endblock content %}

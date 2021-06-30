@@ -41,16 +41,32 @@
 									<p>{{ p.usuario }}</p>
 									<p class="text-muted mb-0" style="font-size: 12px">DNI:</p>
 									<p>{{ p.dni }}</p>
-									<p class="text-muted mb-0" style="font-size: 12px">Test:</p>
-									<p>PLACEHOLDER</p>
 									<p class="text-muted mb-0" style="font-size: 12px">Estado:</p>
 									<p>{{ p.estado.title }}</p>
-									<form action="{% url 'pasaje_perdido' vId=viaje.id pId=p.id %}" method="post">
-										{% csrf_token %}
-										<div class="text-center">
-											<button type="submit" value={{p.id}} onclick="return confirm('¿Está seguro? Esta acción no puede deshacerse.')" class="btn btn-outline-danger btn-sm">Marcar como Ausente</button>
+									{% if p.estado != 'perdido' %}
+										<div class="text-right">
+											<a role="button" class="btn btn-outline-danger btn-sm" href="{% url 'pasaje_perdido' vId=viaje.id pId=p.id %}">Marcar como Ausente</a>
 										</div>
-									</form>
+										{% endif %}
+									{% for t in test.all %}
+										{% if t.pasajero == p %}
+											<p class="text-muted mb-0" style="font-size: 12px">Test:</p>
+											<p>{{ t.estado }}</p>										
+											<div class="text-right">
+												<a role="button" class="btn btn-outline-primary btn-sm" href="{% url 'editar_test' test_id=t.id %}">Editar Test</a>
+											</div>
+											<div class="text-right">
+												<a role="button" class="btn btn-outline-danger btn-sm" href="{% url 'eliminar_test' test_id=t.id %}">Eliminar Test</a>
+											</div>
+										{% endif %}
+									{% endfor %}
+										<br />
+										<div class="text-right">
+											<a role="button" class="btn btn-outline-primary btn-sm" href="{% url 'test' viaje_id=viaje.id pasajero_id=p.id %}">Cargar Test</a>
+										</div>
+										<br />
+
+
 								</div>
 							</div>
 						</div>
