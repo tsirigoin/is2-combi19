@@ -1,0 +1,94 @@
+{% extends 'main/base.html' %}
+
+{% block stylesheets %}
+
+{% endblock stylesheets %}
+
+{% block content %}
+
+<br />
+<br />
+<div class="container mx-auto">
+	<div class="row">
+		<div class="col-sm-12 col-md-12 col-lg-3 pb-4">
+			<div class="row">
+				<div class="col-6 my-auto">
+					<h2 class="font-weight-bold pt-4">Viajes Programados</h2>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				{% for v in viajes_pendientes.all %}
+					<div class="col-sm-12 col-md-12 col-lg-12 pb-4">
+						<div class="h-100">
+							<div class="card-body">
+								<h5 class="card-title"><a href="{% url 'ver_viaje' vId=v.id %}">{{ v.descripcion }}</a></h5>
+								<p class="text-muted mb-0" style="font-size: 12px">Hora de salida:</p>
+								<p class="card-text text-muted" style="font-size: 12px">{{ v.hora }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">Fecha:</p>
+								<p class="card-text text-muted" style="font-size: 12px">{{ v.fecha }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">Precio:</p>
+								<p class="card-text text-muted" style="font-size: 12px">{{ v.precio }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
+								<p class="card-text text-muted" style="font-size: 12px">{{ v.ruta }}</p>
+								<form action="{% url 'viaje_en_curso' vId=v.id %}" method="post">
+									{% csrf_token %}
+									<div class="text-right">
+										<button type="submit" value={{v.id}} onclick="return confirm('Está seguro?')" class="btn btn-outline-primary btn-sm">Comenzar Viaje</button>
+									</div>
+								</form>
+								<br />
+								<form action="{% url 'cancelar_viaje' vId=v.id %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="text-right">
+                                        <button type="submit" value={{v.id}} onclick="return confirm('Está seguro?')" class="btn btn-outline-danger btn-sm">Cancelar Viaje</button>
+                                    </div>
+                                </form>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="col-sm-12 col-md-12 col-lg-9 pb-4">
+			<div class="row">
+				<div class="col-6 my-auto">
+					<h2 class="font-weight-bold pt-4">Historial de Viajes</h2>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				{% for h in historial %}
+					<div class="col-sm-12 col-md-6 col-lg-4 pb-4">
+						<div class="h-100">
+							<div class="card-body">
+								<h5 class="card-title">{{ h.descripcion }}</h5>
+								<p class="text-muted mb-0" style="font-size: 12px">Hora de salida:</p>
+								<p class="card-text text-muted" style="font-size: 12px">{{ h.hora }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">Fecha:</p>
+								<p class="card-text text-muted" style="font-size: 12px">{{ h.fecha }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">Precio:</p>
+								<p class="card-text text-muted" style="font-size: 12px">{{ h.precio }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
+								<p class="card-text text-muted" style="font-size: 12px">{{ h.ruta }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">Estado:</p>
+								<p class="card-text text-muted" style="font-size 12px">{{ h.estado.title }}</p>
+								{% if h.estado == 'viajando' %}
+									<form action="{% url 'finalizar_viaje' vId=h.id %}" method="post">
+										{% csrf_token %}
+										<div class="text-right">
+											<button type="submit" value={{h.id}} onclick="return confirm('Está seguro?')" class="btn btn-outline-primary btn-sm">Finalizar Viaje</button>
+										</div>
+									</form>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
+

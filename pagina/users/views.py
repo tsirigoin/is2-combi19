@@ -1,8 +1,9 @@
-from django.contrib.auth.forms import PasswordResetForm
-from django.http import request, HttpResponse
+from django.contrib.auth.forms import PasswordChangeForm, PasswordResetForm
+from django.http import HttpResponse
 from django.core.mail import send_mail, BadHeaderError
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout as logoutFunct
+from django.contrib.auth import update_session_auth_hash
 from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_encode
@@ -31,6 +32,23 @@ def logout(response):
 	return render(response,'registration/logout.html')
 
 def perfil(response):
+	viajes_pendientes = Viaje.objects.filter(pasajeros__usuario=response.user, pasajeros__estado='reservado')
+	viajes_finalizados = Viaje.objects.filter(Q(pasajeros__usuario=response.user) and ~Q(pasajeros__estado='reservado'))
+	return render(response,'users/perfil.html',{
+		'user': response.user,
+		'viajes_finalizados': viajes_finalizados,
+		'viajes_pendientes': viajes_pendientes,
+	})
+
+def chofer(response):
+	viajes_pendientes = Viaje.objects.filter(chofer__user=response.user,estado='reservado')
+	historial = Viaje.objects.filter(~Q(estado='reservado')).exclude(~Q(chofer__user=response.user))
+	return render(response,'users/chofer.html',{
+		'viajes_pendientes': viajes_pendientes,
+		'historial': historial,
+	})
+
+def editar_perfil(response):
 	if response.method == 'POST':
 		user_form = UserEditForm(response.POST,instance=response.user)
 		if user_form.is_valid():
@@ -38,16 +56,34 @@ def perfil(response):
 			return redirect('perfil')
 	else:
 		user_form = UserEditForm(instance=response.user)
-		viajes_pendientes = Viaje.objects.filter(pasajeros__usuario=response.user, pasajeros__estado='reservado')#.first()
-		viajes_finalizados = Viaje.objects.filter(pasajeros__usuario=response.user, pasajeros__estado='finalizado')
-	return render(response,'users/perfil.html',{'user': response.user,
-		'user_form': user_form, 'viajes_finalizados': viajes_finalizados, 'viajes_pendientes': viajes_pendientes,
+	return render(response,'users/editar_perfil.html',{
+		'user': response.user,
+		'user_form': user_form,
+	})
+
+def cambiar_contraseña(response):
+	if response.method == 'POST':
+		pass_form = PasswordChangeForm(response.user,response.POST)
+		if pass_form.is_valid():
+			user = pass_form.save()
+			update_session_auth_hash(response,user)
+			return redirect('perfil')
+	else:
+		pass_form = PasswordChangeForm(response.user)
+	return render(response,'users/cambiar_contraseña.html',{
+		'pass_form': pass_form
 	})
 
 def cambiar_membresia(response):
 	response.user.toggle_premium()
 	response.user.save()
 	return redirect('perfil')
+
+def ver_viaje(response,vId):
+	viaje = Viaje.objects.get(id=vId)
+	return render(response,'users/ver_viaje.html',{
+		'viaje': viaje,
+	})
 
 def comentarios(response,viaje_id):
 	if response.method == 'POST':
@@ -65,7 +101,11 @@ def comentarios(response,viaje_id):
 		return render(response, 'users/comentarios.html',{'user': response.user, 'viajes': viajes,
 	 			'comentarios': comentarios })
 
-
+def pasaje_perdido(response,vId,pId):
+	pasaje = Pasajero.objects.get(id=pId)
+	pasaje.perdido()
+	pasaje.save()
+	return redirect(response,'chofer',vId,pId)
 
 def eliminar_comentario(response, comentario_id):
 	comentario = Comentario.objects.get(id=comentario_id)
@@ -99,6 +139,52 @@ def devolver_pasaje(response, vId):
 	else:
 		messages.success(response, 'Se le devolvio el 50% del precio del boleto')
 	return redirect('perfil')
+
+def cancelar_viaje(response, vId):
+	viaje = Viaje.objects.get(id=vId)
+	for p in viaje.pasajeros.all():
+		associated_user = p.usuario
+		if associated_user:
+			subject = "Viaje "+str(viaje)+" cancelado"
+			email_template_name = "users/viaje_cancelado_email.txt"
+			c = {
+				"email": associated_user.email,
+				"site_name": 'COMBI-19',
+				"viaje_nom": str(viaje),
+			}
+			email = render_to_string(email_template_name,c)
+			try:
+				send_mail(subject,email,'viajes@combi19.com',[associated_user.email],fail_silently=False)
+			except BadHeaderError:
+				return HttpResponse('Header inválido detectado.')
+		p.cancelar()
+		p.save()
+	viaje.cancelar()
+	viaje.save()
+	return redirect('cancelacion_exitosa')
+
+def viaje_en_curso(response, vId):
+	viaje = Viaje.objects.get(id=vId)
+	for p in viaje.pasajeros.all():
+		if p.estado == 'reservado':
+			p.en_curso()
+			p.save()
+	viaje.en_curso()
+	viaje.save()
+	return redirect('chofer')
+
+def finalizar_viaje(response, vId):
+	viaje = Viaje.objects.get(id=vId)
+	for p in viaje.pasajeros.all():
+		if p.estado == 'viajando':
+			p.finalizar()
+			p.save()
+	viaje.finalizar()
+	viaje.save()
+	return redirect('chofer')
+
+def cancelacion_exitosa(response):
+	return render(response,'users/cancelacion_exitosa.html')
 
 def password_reset_request(response):
 	if response.method == 'POST':

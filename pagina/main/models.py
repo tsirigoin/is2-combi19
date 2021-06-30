@@ -58,11 +58,19 @@ class Ruta(models.Model):
 
 class Pasajero(models.Model):
     usuario = models.ForeignKey(CustomUser, default=None, on_delete=models.CASCADE)
-    estado = models.CharField(choices={('reservado','Reservado'),('viajando','Viajando'),('finalizado','Finalizado')},max_length=12)
+    estado = models.CharField(choices={('reservado','Reservado'),('viajando','Viajando'),('finalizado','Finalizado'),('cancelado','Cancelado'),('perdido','Perdido')},max_length=12,default='reservado')
     dni = models.CharField(max_length=10,default=None ,validators=[MinLengthValidator(6)])
 
     def __str__(self):
         return (str(self.usuario)+" "+str(self.dni))
+    def cancelar(self):
+        self.estado = 'cancelado'
+    def en_curso(self):
+        self.estado = 'viajando'
+    def finalizar(self):
+        self.estado = 'finalizado'
+    def perdido(self):
+        self.estado = 'perdido'
 
 class Viaje(models.Model):
     descripcion = models.CharField(max_length=100)
@@ -74,12 +82,19 @@ class Viaje(models.Model):
     precio = models.DecimalField(default=None, max_digits=10, decimal_places=2, validators=[MinValueValidator(0)])
     insumo = models.ManyToManyField(Insumo,blank=True)
     pasajeros = models.ManyToManyField(Pasajero, blank=True)
+    estado = models.CharField(choices={('reservado','Reservado'),('viajando','Viajando'),('finalizado','Finalizado'),('cancelado','Cancelado')},max_length=12,default='reservado')
 
     class Meta:
         unique_together = ('chofer', 'fecha','hora', 'ruta',)
 
     def __str__(self):
         return (self.descripcion+" "+str(self.ruta)+" "+str(self.fecha))
+    def cancelar(self):
+        self.estado = 'cancelado'
+    def en_curso(self):
+        self.estado = 'viajando'
+    def finalizar(self):
+        self.estado = 'finalizado'
 
 class Comentario(models.Model):
     usuario = models.ForeignKey(CustomUser, default=None, on_delete=models.CASCADE)
@@ -97,3 +112,30 @@ class Test(models.Model):
 
     def __str__(self):
         return (str(self.pasajero)+" "+str(self.estado))
+class Order(models.Model):
+    user = models.ForeignKey(CustomUser,on_delete=models.CASCADE)
+
+    pasajes = models.ManyToManyField(Viaje)
+
+    #insumos = models.ManyToManyField(Insumo)
+
+    def __str__(self):
+        return self.user.username
+
+    def get_total(self):
+        total = 0
+        for order_item in self.items.all():
+            total += order_item.get_final_price()
+        if self.coupon:
+            total -= self.coupon.amount
+        return total
+
+    def cancelar_order(self):
+        for pasaje in self.pasajes.all():
+            id = pasaje.id
+            pasaje_del = Pasajero.objects.get(id=id)
+            pasaje_del.delete()
+        """for insumo in self.insumos.all():
+            id = insumo.id
+            insumo_del = Insumo.objects.get(id=id)
+            insumo_del.delete()"""

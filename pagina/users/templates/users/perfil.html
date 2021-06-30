@@ -1,24 +1,27 @@
+{% extends "main/base.html" %}
+
+{% block stylesheets %}
 <style>
-.success{
-	list-style: none;
-	background-color: #2e6da4;
-	color: white;
-	text-align: center;
+	.success{
+		list-style: none;
+		background-color: #2e6da4;
+		color: white;
+		text-align: center;
 	}
 </style>
-{% extends "main/base.html" %}
+{% endblock stylesheets %}
 
 {% block content %}
 
 {% load crispy_forms_tags %}
 
 {% if messages %}
-        <ul class="messages">
-              {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-              {% endfor %}
-        </ul>
-        {% endif %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
 <!--User-->
 <br />
 <br />
@@ -38,7 +41,7 @@
 					<p class="text-muted mb-0" style="font-size: 12px">Fecha de Nacimiento:</p>
 					<p>{{ user.fecha_nacimiento }}</p>
 					<div class="text-right">
-						<button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#perfilModal">Editar Perfil</button>
+						<a role="button" class="btn btn-outline-primary btn-sm" href="{% url 'editar_perfil' %}">Editar Perfil</a>
 					</div>
 					<br />
 					<form action="{% url 'cambiar_membresia' %}" method="POST">
@@ -89,7 +92,7 @@
 		    	{% endfor %}
 	        </div>
 	    </div>
-      <div class="col-sm-12 col-md-12 col-lg-9 pb-4">
+    	<div class="col-sm-12 col-md-12 col-lg-9 pb-4">
 	    	<div class="row">
 	    		<div class="col-6 my-auto">
 	    			<h2 class="font-weight-bold pt-4">Viajes Realizados</h2>
@@ -97,20 +100,22 @@
 	    	</div>
 	      	<br>
 	      	<div class="row">
-				<!-- Aquí falta poner los valores correctos -->
 		      	{% for v in viajes_finalizados.all %}
 			    	<div class="col-sm-12 col-md-6 col-lg-4 pb-4">
 		                <div class="h-100">
 							<div class="card-body">
 		                  		<h5 class="card-title">{{ v.descripcion }}</h5>
-                          <p class="text-muted mb-0" style="font-size: 12px">Hora de salida:</p>
+                          		<p class="text-muted mb-0" style="font-size: 12px">Hora de salida:</p>
 		                    	<p class="card-text text-muted" style="font-size:12px">{{ v.hora }}</p>
-                          <p class="text-muted mb-0" style="font-size: 12px">Fecha:</p>
-                          <p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
-                          <p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
-                          <p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
-                          <a href="{% url 'comentario' v.id %}">comentarios</a>
-													<a href="{% url 'test' v.id %}">test</a>
+                         		<p class="text-muted mb-0" style="font-size: 12px">Fecha:</p>
+                          		<p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
+                          		<p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
+                          		<p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">Estado:</p>
+								<p class="card-text text-muted" style="font-size 12px">{{ v.estado.title }}</p>
+								{% if v.estado == 'finalizado' %}
+	                          		<a href="{% url 'comentario' v.id %}">comentarios</a>
+								{% endif %}
 		                	</div>
 		              	</div>
 		            </div>
@@ -120,7 +125,7 @@
 	</div>
 </div>
 
-<!-- Profile Edit Modal -->
+<!-- Profile Edit Modal
 <div class="modal fade" tabindex="-1" id="perfilModal" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -142,8 +147,8 @@
 	        </div>
 	    </div>
   	</div>
-</div>
+</div> -->
 
 
 
-{% endblock %}
+{% endblock content %}

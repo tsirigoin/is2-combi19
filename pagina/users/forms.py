@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 from .models import CustomUser
-from main.models import Comentario
 
 class CustomDateInput(forms.DateInput):
 	input_type = 'date'
@@ -93,3 +92,21 @@ class UserEditForm(CustomUserChangeForm):
 		self.fields.pop('password')
 		self.fields.pop('password1')
 		self.fields.pop('password2')
+
+class PasswordRenewForm(CustomUserChangeForm):
+	password_now = forms.CharField(label="Contraseña Actual",help_text='Ingrese su contraseña actual',widget=forms.PasswordInput)
+	password1 = forms.CharField(label="Nueva Contraseña",help_text='Ingrese su nueva contraseña',widget=forms.PasswordInput)
+	password2 = forms.CharField(label="Repita su Nueva Contraseña",help_text='Reingrese su nueva contraseña',widget=forms.PasswordInput)
+	class Meta(CustomUserChangeForm):
+		model = CustomUser
+		fields = (
+			'password_now',
+			'password1',
+			'password2',
+		)
+	def __init__(self,*args,**kwargs):
+		super(CustomUserChangeForm,self).__init__(*args, **kwargs)
+		self.fields.pop('password')
+	
+	def clean_password(self):
+		return super().clean_password()

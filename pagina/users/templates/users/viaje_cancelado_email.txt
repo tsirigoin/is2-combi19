@@ -1,0 +1,10 @@
+{% autoescape off %}
+Hola,
+
+Su viaje, {{ viaje_nom }}, fue cancelado por complicaciones de la empresa. Por lo tanto, se le ha reestablecido el valor total del pasaje a la tarjeta asociada al pago del mismo.
+
+Lamentamos las molestias ocasionadas, y esperamos que vuelva a viajar con nosotros.
+
+Atentamente,
+Grupo COMBI-19.
+{% endautoescape %}

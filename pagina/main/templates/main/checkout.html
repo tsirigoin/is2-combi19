@@ -1,0 +1,53 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  <main >
+    <div class="container wow fadeIn">
+      <h2 class="my-5 h2 text-center">Checkout</h2>
+      <div class="row">
+        <div class="col-md-8 mb-4">
+          <div class="card">
+            <form method="POST" class="card-body">
+              {% csrf_token %}
+
+              <h3>Ingrese los datos de la tarjeta</h3>
+
+              <div class='hideable_billing_form'>
+                <div class="md-form mb-5">
+                  <label for="tarjeta_nombre" class="">Nombre completo del titular</label>
+                  <input type='text' placeholder='Como aparece en la tarjeta'id='tarjeta_nombre' name='tarjeta_nombre' class='form-control' />
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-9 col-md-12 mb-4">
+                    <label for="tarjeta_numero" class="">Numero de tarjeta</label>
+                    <input type='text' placeholder='' id='tarjeta_numero' name='tarjeta_numero' class='form-control' />
+                  </div>
+
+                  <div class="col-lg-3 col-md-6 mb-6">
+                    <label for="tarjeta_codigo">Codigo tarjeta</label>
+                    <input type='text' placeholder='' id='tarjeta_codigo' name='tarjeta_codigo' class='form-control' />
+                    <div class="invalid-feedback">
+                      Codigo requerido.
+                    </div>
+                  </div>
+
+                </div>
+
+              <hr class="mb-4">
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Continue to checkout</button>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+{% endblock content %}

@@ -33,6 +33,7 @@ text-align: center;
 </style>
 
 {% extends 'main/base.html' %}
+{% load mathfilters %}
 
 {% block content_title %} Home {% endblock content_title %}
 {% block content %}
@@ -58,9 +59,17 @@ text-align: center;
                   <span style="float:right">Fecha: {{viaje.fecha}}</span></p></h2>
             </button>
             <div class="contenido">
-                <h3 style="text-align:left" >{{viaje.descripcion}}<p style="text-align:right">${{viaje.precio}}</p></h3>
+
+                <h3 style="text-align:left" >{{viaje.descripcion}}
                 {% if user.is_authenticated%}
+                  {% if user.is_premium %}
+                    <p style="text-align:right">$ <del>{{viaje.precio}}</del><ins>{{viaje.precio|mul:0.7}}</ins></p></h3>
+                  {%else%}
+                    <p style="text-align:right">${{viaje.precio}}</p></h3>
+                  {%endif%}
                   <button type="submit"><a href="{% url 'compra' vId=viaje.id uName=user.username %}">Comprar</a></button>
+                {%else%}
+                  <p style="text-align:right">${{viaje.precio}}</p></h3>
                 {% endif %} 
             </div>
         {% empty %}
