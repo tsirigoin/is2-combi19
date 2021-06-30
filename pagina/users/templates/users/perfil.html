@@ -77,7 +77,12 @@
 									<p class="text-muted mb-0" style="font-size: 12px">Fecha:</p>
 									<p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
 									<p class="text-muted mb-0" style="font-size: 12px">Precio:</p>
-									<p class="card-text text-muted" style="font-size:12px">${{ v.precio }}</p>
+									{% if user.has_premium %}
+										{% widthratio v.precio 100 70 as precio %}
+										<p class="card-text text-muted" style="font-size: 12px">${{ precio }}</p>
+									{% else %}
+										<p class="card-text text-muted" style="font-size: 12px">${{ v.precio }}</p>
+									{% endif %}
 									<p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
 									<p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
 									<form action="{% url 'devolver_pasaje' vId=v.id %}" method="post">

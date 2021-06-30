@@ -105,7 +105,7 @@ class Comentario(models.Model):
         return (str(self.usuario)+" "+str(self.viaje)+" "+(self.texto))
 
 class Test(models.Model):
-    pasajero = models.ForeignKey(Pasajero, default=None, on_delete=models.CASCADE)
+    pasajero = models.OneToOneField(Pasajero, default=None, on_delete=models.CASCADE)
     estado = models.CharField(choices={('positivo','Positivo'),('negativo','Negativo')},max_length=12)
     temperatura = models.DecimalField(default=None, max_digits=3, decimal_places=1, validators=[MinValueValidator(0)])
     viaje = models.ForeignKey(Viaje,blank=True, on_delete=models.CASCADE)
