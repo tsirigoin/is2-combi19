@@ -18,7 +18,7 @@
                     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
               {% endfor %}
         </ul>
-        {% endif %}	
+        {% endif %}
 <!--User-->
 <br />
 <br />
@@ -110,6 +110,7 @@
                           <p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
                           <p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
                           <a href="{% url 'comentario' v.id %}">comentarios</a>
+													<a href="{% url 'test' v.id %}">test</a>
 		                	</div>
 		              	</div>
 		            </div>

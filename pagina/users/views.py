@@ -11,7 +11,7 @@ from django.utils.encoding import force_bytes
 from .forms import CustomUserCreationForm, UserEditForm
 from .models import CustomUser
 from main.forms import CustomComentarioForm
-from main.models import Viaje, Comentario, Pasajero
+from main.models import Viaje, Comentario, Pasajero, Test
 import datetime
 from django.contrib import messages
 
@@ -87,7 +87,7 @@ def modificar_comentario(response,comentario_id):
 		return render(response,'users/comentario.html',{'user': response.user, 'com':comen,
 			'comentario': comentario,
 	})
-	
+
 def devolver_pasaje(response, vId):
 	user = response.user
 	viaje = Viaje.objects.filter(id=vId).first()
@@ -99,7 +99,7 @@ def devolver_pasaje(response, vId):
 	else:
 		messages.success(response, 'Se le devolvio el 50% del precio del boleto')
 	return redirect('perfil')
-	
+
 def password_reset_request(response):
 	if response.method == 'POST':
 		password_reset_form = PasswordResetForm(response.POST)
@@ -126,3 +126,46 @@ def password_reset_request(response):
 				return redirect('/accounts/password_reset/done/')
 	password_reset_form = PasswordResetForm()
 	return render(request=response,template_name='password/password_reset.html',context={'password_reset_form': password_reset_form})
+
+def test(response, viaje_id):
+		if response.method == 'POST':
+			cant = 0
+			form = response.POST
+			if 	float(form['test_temperatura'])<= 38:
+				if form['fiebre']=='fiebreSi':
+					cant= cant + 1
+				if form['difResp']=='difRespSi':
+					cant= cant + 1
+				if form['olfato']=='olfatoSi':
+					cant= cant + 1
+				if cant<2:
+					test= Test(
+						pasajero = Pasajero.objects.get(pk=viaje_id),
+						viaje = Viaje.objects.get(pk=viaje_id),
+						temperatura = form['test_temperatura'],
+						estado = 'negativo'
+					)
+					test.save()
+					return redirect('test', viaje_id)
+				else:
+					test= Test(
+						pasajero = Pasajero.objects.get(pk=viaje_id),
+						viaje = Viaje.objects.get(pk=viaje_id),
+						temperatura = form['test_temperatura'],
+						estado = 'positivo'
+					)
+					test.save()
+					return redirect('test', viaje_id)
+			else:
+				test= Test(
+					pasajero = Pasajero.objects.get(pk=viaje_id),
+					viaje = Viaje.objects.get(pk=viaje_id),
+					temperatura = form['test_temperatura'],
+					estado = 'positivo'
+				)
+				test.save()
+				return redirect('test', viaje_id)
+		else:
+			viajes = Viaje.objects.first()
+			user = Pasajero.objects.get(pk=1)
+			return render(response, 'users/test.html',{'usuario': user, 'viaje': viajes })

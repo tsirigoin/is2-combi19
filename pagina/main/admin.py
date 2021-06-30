@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Combi, Insumo, Viaje, Lugar, Ruta, Comentario, Pasajero
+from .models import Combi, Insumo, Viaje, Lugar, Ruta, Comentario, Pasajero, Test
 
 # Register your models here.
 @admin.register(Combi)
@@ -19,6 +19,7 @@ class InsumoAdmin(admin.ModelAdmin):
 	)
 admin.site.register(Ruta)
 admin.site.register(Viaje)
+admin.site.register(Test)
 admin.site.register(Lugar)
 @admin.register(Comentario)
 class ComentarioAdmin(admin.ModelAdmin):

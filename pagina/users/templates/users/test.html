@@ -1,0 +1,67 @@
+{% extends "main/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<main >
+    <div class="container wow fadeIn">
+      <h2 class="my-5 h2 text-center">Test de pasajero</h2>
+        <div class="md-8 mb-4 text-center">
+          <div class="card">
+            <form method="POST" class="card-body">
+              {% csrf_token %}
+
+              <h3>Ingrese los datos del pasajero</h3>
+                <div class='test_form'>
+
+                  <div class="md-form mb-5">
+                      <input type='hidden' placeholder='{{ usuario.id }}'id='pasajero_id' name='pasajero_id' class='form-control' />
+                  </div>
+
+                  <div class="md-form mb-5">
+                      <input type='hidden' placeholder='{{ viaje.id }}' id='viaje_id' name='test_temperatura' class='form-control' />
+                  </div>
+
+                    <div class="md-form mb-5">
+                        <label for="test_temperatura" class="">Temperatura</label>
+                        <input type='number' placeholder=''id='test_temperatura' step="0.1" name='test_temperatura' class='form-control' />
+                    </div>
+
+                    <p>
+                    <div class="md-form mb-5">
+                        <label for="test_usuario" class="">Tuvo fiebre la ultima semana?</label>
+                        <input type="radio" name="fiebre" value="fiebreSi"> Si
+                        <input type="radio" name="fiebre" value="fiebreNo"> No
+                    </div>
+                    </p>
+
+                    <p>
+                        <div class="md-form mb-5">
+                            <label for="test_usuario" class="">Tuvo dificultad respiratoria la ultima semana?</label>
+                            <input type="radio" name="difResp" value="difRespSi"> Si
+                            <input type="radio" name="difResp" value="difRespNo"> No
+                        </div>
+                    </p>
+
+                    <p>
+                    <div class="md-form mb-5">
+                        <label for="test_usuario" class="">Tuvo perdida de olfato o gusto la ultima semana?</label>
+                        <input type="radio" name="olfato" value="olfatoSi"> Si
+                        <input type="radio" name="olfato" value="olfatoNo"> No
+                    </div>
+                    </p>
+
+                    <p>
+                    <div class="md-form mb-5">
+                        <label for="test_usuario" class="">Tuvo dolor de cabeza la ultima semana?</label>
+                        <input type="radio" name="dolor" value="dolorSi"> Si
+                        <input type="radio" name="dolor" value="dolorNo"> No
+                    </div>
+                    </p>
+
+                </div>
+                <hr class="mb-4">
+                <button class="btn btn-primary btn-lg btn-block" type="submit">Guardar Test</button>
+            </form>
+        </div>
+</main>
+{% endblock content %}

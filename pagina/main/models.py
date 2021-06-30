@@ -60,7 +60,7 @@ class Pasajero(models.Model):
     usuario = models.ForeignKey(CustomUser, default=None, on_delete=models.CASCADE)
     estado = models.CharField(choices={('reservado','Reservado'),('viajando','Viajando'),('finalizado','Finalizado')},max_length=12)
     dni = models.CharField(max_length=10,default=None ,validators=[MinLengthValidator(6)])
-    
+
     def __str__(self):
         return (str(self.usuario)+" "+str(self.dni))
 
@@ -88,3 +88,12 @@ class Comentario(models.Model):
 
     def __str__(self):
         return (str(self.usuario)+" "+str(self.viaje)+" "+(self.texto))
+
+class Test(models.Model):
+    pasajero = models.ForeignKey(Pasajero, default=None, on_delete=models.CASCADE)
+    estado = models.CharField(choices={('positivo','Positivo'),('negativo','Negativo')},max_length=12)
+    temperatura = models.DecimalField(default=None, max_digits=3, decimal_places=1, validators=[MinValueValidator(0)])
+    viaje = models.ForeignKey(Viaje,blank=True, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return (str(self.pasajero)+" "+str(self.estado))
