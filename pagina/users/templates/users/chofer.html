@@ -31,6 +31,10 @@
 								<p class="card-text text-muted" style="font-size: 12px">{{ v.precio }}</p>
 								<p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
 								<p class="card-text text-muted" style="font-size: 12px">{{ v.ruta }}</p>
+								<div class="text-right">
+									<a class="btn btn-outline-success btn-sm" href="{% url 'compra_en_persona' vId=v.id uName='CompraEnPersona' %}">Vender Asiento</a>
+								</div>
+								<br>
 								<form action="{% url 'viaje_en_curso' vId=v.id %}" method="post">
 									{% csrf_token %}
 									<div class="text-right">

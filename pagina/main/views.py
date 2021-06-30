@@ -31,7 +31,7 @@ def compra(request,vId,uName):
 		dniPasajero = request.POST.get("pasajero"+str(i)) #se que esto esta mal pero despues de que se me borro todo dije fue
 		print(dniPasajero)
 		if (dniPasajero is not None):
-			pas = Pasajero(usuario = user, dni = i)
+			pas = Pasajero(usuario = user, dni = dniPasajero)
 			pas.save()
 			print(dniPasajero)
 			viaje.pasajeros.add(pas)
