@@ -1,10 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import ugettext_lazy as _
-from django.core.validators import MinLengthValidator,ValidationError
+from django.core.validators import MinLengthValidator,ValidationError,MinValueValidator
 from datetime import date
+import datetime
 
 from .managers import CustomUserManager
+
+class Tarjeta(models.Model):
+    numero = models.IntegerField(max_length=19,validators=[MinLengthValidator(16)],unique=True)
+    fecha = models.DateField()
+    titular = models.CharField(max_length=40)
+
+    def __str__(self):
+        return "Tarjeta terminada en "+str(self.numero[-4:])
 
 class CustomUser(AbstractUser):
 	username = models.CharField(_('Nombre de usuario'),max_length=40,primary_key=True,unique=True)
@@ -14,6 +23,7 @@ class CustomUser(AbstractUser):
 	last_login = models.DateTimeField(_('Última conexión'),auto_now=True)
 	fecha_nacimiento = models.DateField(_('Fecha de nacimiento'))
 	has_premium = models.BooleanField(_('Posee membresía premium'),default=False)
+	tarjetas = models.ManyToManyField(Tarjeta,blank=True)
 
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = [

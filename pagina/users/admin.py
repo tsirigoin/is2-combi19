@@ -39,3 +39,6 @@ class ChoferAdmin(admin.ModelAdmin):
         'contacto',
     )
 admin.site.unregister(Group)
+
+"""@admin.register(Tarjeta)
+class TarjetaAdmin"""
