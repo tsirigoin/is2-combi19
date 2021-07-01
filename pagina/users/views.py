@@ -297,6 +297,7 @@ def editar_test(response,test_id):
 		cant = 0
 		form = response.POST
 		test = Test.objects.get(id=test_id)
+		viaje_id = test.viaje.id
 		if 	float(form['test_temperatura'])< 38:
 			if form['fiebre']=='fiebreSi':
 				cant= cant + 1
@@ -307,20 +308,20 @@ def editar_test(response,test_id):
 			if form['dolor']=='dolorSi':
 				cant= cant + 1
 			if cant<2:
-				test.temperatura = form['test_temperatura']
+				test.temperatura = float(form['test_temperatura'])
 				test.estado = 'negativo'
 				test.save()
-				return redirect('editar_test', test_id)
+				return redirect('ver_viaje', viaje_id)
 			else:
-				test.temperatura = form['test_temperatura'],
+				test.temperatura = float(form['test_temperatura'])
 				test.estado = 'positivo'
 				test.save()
-				return redirect('editar_test', test_id)
+				return redirect('ver_viaje', viaje_id)
 		else:
-			test.temperatura = form['test_temperatura'],
+			test.temperatura = float(form['test_temperatura'])
 			test.estado = 'positivo'
 			test.save()
-			return redirect('editar_test', test_id)
+			return redirect('ver_viaje', viaje_id)
 	else:
 		test = Test.objects.get(id=test_id)
 		return render(response,'users/ver_test.html',{'user': response.user, 'test':test,

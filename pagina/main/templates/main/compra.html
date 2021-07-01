@@ -160,6 +160,17 @@
 
             
             if ((parseInt(number) > 0) && (parseInt(number) <= parseInt(total) )){
+
+                container.appendChild(document.createElement("br"));  
+                container.appendChild(document.createTextNode("Ingrese nombre del propietario: "));
+                var numN = document.createElement("input");
+                numN.type = "text";
+                numN.name = "numN";
+                numN.required = "required";
+                numN.minLength = 5;
+                numN.placeholder = "Como aparece en la tarjeta";
+                container.appendChild(numN);
+                container.appendChild(document.createElement("br"));  
                 
                 container.appendChild(document.createElement("br"));  
                 container.appendChild(document.createTextNode("Ingrese numero de tarjeta: "));
@@ -251,7 +262,7 @@
                 <br>
                 <div class= "col-xs-4">
                 <button class = "btn btn-success" onclick="addFields('{{viaje.precio}}','{{user.is_premium}}')">Pago con nueva tarjeta</button>
-                <button class = "btn btn-success" onclick="test('{{viaje.precio}}','{{user.is_premium}}','{{user.test}}')">Pago con tarjeta guardad</button>
+                <button class = "btn btn-success" onclick="test('{{viaje.precio}}','{{user.is_premium}}','{{user.test}}')">Pago con tarjeta guardada</button>
                 </div>
             </a> 
             <div class="col-sm-12">
