@@ -12,11 +12,12 @@ from django.utils.encoding import force_bytes
 from .forms import CustomUserCreationForm, UserEditForm
 from .models import CustomUser
 from main.forms import CustomComentarioForm
-from main.models import Viaje, Comentario, Pasajero, Test
+from main.models import Viaje, Comentario, Pasajero, Test, Insumo
 import datetime
 from datetime import date, timedelta
 from django.contrib import messages
 from dateutil.relativedelta import relativedelta
+
 
 # Create your views here.
 def register(response):
@@ -356,3 +357,23 @@ def contratar_membresia(response):
 	else:
 		return render(response,'users/premium.html',{'user': response.user,
 })
+
+def chofer_venta_insumos(request,pId,iId):
+	pasaje = Pasajero.objects.get(id=pId)
+	insumo = Insumo.objects.get(id=iId)
+	form = request.POST
+	cant = int(form['cant'])
+	if insumo.cantidadActual > cant and cant > 0:
+		if pasaje.insumos:
+			aux = eval(pasaje.insumos)
+		else:
+			aux = dict()
+		insumo.cantidadActual = insumo.cantidadActual - cant
+		aux[insumo.nombre] = cant
+		insumo.save()
+		pasaje.insumos = eval(str(aux))
+		pasaje.save()
+		messages.success(request,'Compra realizada con éxito.')
+	else:
+		messages.error(request,'Ingresa una cantidad posible.')
+	return redirect('chofer')

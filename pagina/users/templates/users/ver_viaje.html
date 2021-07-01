@@ -63,6 +63,13 @@
 											<a role="button" class="btn btn-outline-primary btn-sm" href="{% url 'test' viaje_id=viaje.id pasajero_id=p.id %}">Cargar Test</a>
 										</div>
 									{% endif %}
+									<br>
+									<form action="{% url 'chofer_venta_insumos' vId=viaje.id %}" method="post">
+										{% csrf_token %}
+										<div class="text-right">
+											<button type="submit" class="btn btn-outline-primary btn-sm">Ver Insumos</button>
+										</div>
+									</form>
 								</div>
 							</div>
 						</div>

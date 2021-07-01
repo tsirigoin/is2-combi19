@@ -36,5 +36,6 @@ urlpatterns = [
     url(r'chofer/editar_test(?P<test_id>[0-9]+)',regviews.editar_test, name="editar_test"),
     url(r'chofer/eliminar_test(?P<test_id>[0-9]+)',regviews.eliminar_test, name="eliminar_test"),
     url(r'viaje/(?P<vId>[0-9]+)/ver_insumos',views.ver_insumos,name='ver_insumos'),
+    url(r'chofer/viaje/(?P<vId>[0-9]+)/ver_insumos',regviews.chofer_venta_insumos,name='chofer_venta_insumos'),
     path(r'viaje/(?P<pId>[0-9]+)/ver_insumos/(?P<iId>[0-9]+)',views.comprar_insumo,name='comprar_insumo'),
 ]
