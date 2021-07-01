@@ -17,11 +17,112 @@
 <script type='text/javascript'>
 
     function test (precio,user, test){
-        var container = document.getElementById("container");
-        while (container.hasChildNodes()) {
-            container.removeChild(container.lastChild);
+        
+            // Number of inputs to create
+            var number = document.getElementById("disponible").value;
+            // Container <div> where dynamic content will be placed
+            var container = document.getElementById("container");
+            // Clear previous contents of the container
+            var total = document.getElementById("disponible").max;
+
+            while (container.hasChildNodes()) {
+                container.removeChild(container.lastChild);
+            }
+            if (parseInt(total) < parseInt(number)){
+                container.appendChild(document.createTextNode("No hay tantos asientos disponibles"));
+            }
+
+            else{
+                if ((test[0] == "[")&&(test[1] == "]")){
+            container.appendChild(document.createTextNode("No hay tarjetas guardadas"));
         }
-        container.appendChild(document.createTextNode(test));
+        else{
+                container.appendChild(document.createElement("br"));
+                for (i=0;i<number;i++){
+                    // Append a node with a random text
+                    container.appendChild(document.createTextNode("Pasajero "+ (i+1) + ": "));
+                    // Create an <input> element, set its type and name attributes
+                    var input = document.createElement("input");
+                    input.type = "text";
+                    input.name = "pasajero" + i;
+                    input.required = "required";
+                    input.minLength = 6;
+                    input.placeholder = "DNI del pasajero";
+                    //input.value = "pasajero" + i;
+                    //input.hidden = true;
+                    container.appendChild(input);
+                    // Append a line break 
+                    container.appendChild(document.createElement("br"));
+                }
+
+                
+                if ((parseInt(number) > 0) && (parseInt(number) <= parseInt(total) )){
+
+                    container.appendChild(document.createTextNode("Selecciona la tarjeta: "));
+                    var cuenta=0;
+                    test = test.slice(2);
+                    var drop = document.createElement("select");
+                    drop.id="drop";
+                    drop.name="drop";
+                    container.appendChild(drop);
+                    while(test.slice(0,1)=="T"){
+                        var option = document.createElement("option");
+                        option.value=test.slice(0,25);
+                        option.text=test.slice(0,25);
+                        drop.appendChild(option)
+                        test=test.slice(29);
+                    }
+                    container.appendChild(document.createElement("br"));
+
+                    container.appendChild(document.createTextNode("Ingrese fecha de vencimiento: "));
+                    var codT = document.createElement("input");
+                    codT.type = "month";
+                    codT.name = "fechaT";
+                    codT.required = "required";
+                    codT.min="2021-06";
+                    container.appendChild(codT);
+
+                    container.appendChild(document.createTextNode(" Codigo de seguridad: "));
+                    var codT = document.createElement("input");
+                    codT.type = "text";
+                    codT.name = "codT";
+                    codT.required = "required";
+                    codT.minLength = 3;
+                    codT.placeholder = "Numero de tarjeta";
+                    container.appendChild(codT);
+                    container.appendChild(document.createElement("br")); 
+                    
+                    var radio2 = document.createElement("input");
+                    radio2.type = "radio";
+                    radio2.id="no";
+                    radio2.name = "guardado";
+                    radio2.required = "required";
+                    radio2.value="no";
+                    radio2.checked = true;
+                    radio2.hidden= true;
+                    container.appendChild(radio2);
+
+                    if(user == "True"){
+                        container.appendChild(document.createTextNode("Total: "+ (parseInt(precio)*parseInt(number)*0.7) + " (Descuento aplicado) "));
+                    }
+                    else{
+                        container.appendChild(document.createTextNode("Total: "+ parseInt(precio)*parseInt(number)));
+                    }
+
+                    container.appendChild(document.createElement("br"));
+                    var boton = document.createElement("input");
+                    boton.type = "submit";
+                    boton.name = "comprar";
+                    boton.id = "Comprar"
+                    boton.value = "Confirma Compra";
+                    //boton.onclick = "clicked()";
+                    container.appendChild(boton);
+                }
+            }
+        //-------------------
+        }
+        
+
     }
 
     function addFields(precio, user){

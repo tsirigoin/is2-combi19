@@ -6,6 +6,7 @@ from .filters import ProductFilter
 from users.models import CustomUser, Tarjeta
 from django.http import HttpResponse
 from django.contrib import messages
+from django.core import serializers
 
 import datetime
 from datetime import date, timedelta
@@ -39,19 +40,20 @@ def compra(request,vId,uName):
 			viaje.pasajeros.add(pas)
 			viaje.save()
 			compra = True
-			print(Tarjeta.objects.filter(numero = request.POST.get("numT")).exists())
-			if (Tarjeta.objects.filter(numero = request.POST.get("numT")).exists()):
-				tarjeta = Tarjeta.objects.get(numero=request.POST.get("numT"))
-			else:
-				tarjeta = Tarjeta(numero = request.POST.get("numT"),fecha= request.POST.get("fechaT"), titular="test")
-				tarjeta.save()
-			user.tarjetas.add(tarjeta)
-			user.save()
+			if (request.POST.get("guardado")=="si"):
+				if (Tarjeta.objects.filter(numero = request.POST.get("numT")).exists()):
+					tarjeta = Tarjeta.objects.get(numero=request.POST.get("numT"))
+				else:
+					tarjeta = Tarjeta(numero = request.POST.get("numT"),fecha= request.POST.get("fechaT"), titular="test")
+					tarjeta.save()
+				user.tarjetas.add(tarjeta)
+				user.save()
 
+	tarjetas = user.test
 	if compra:
 		messages.success(request, 'Compra realizada con exito')
 		return redirect("/")
-	return render(request, "main/compra.html", {"viaje": viaje, "total":totalAsientos})
+	return render(request, "main/compra.html", {"viaje": viaje, "total":totalAsientos, "tarjetas":tarjetas})
 
 def checkout(response):
 	if response.method == 'POST':
