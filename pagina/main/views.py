@@ -1,8 +1,9 @@
+from django.db.models.query import QuerySet
 from django.shortcuts import render,redirect
 from .models import Pasajero, Viaje
 from .filters import ProductFilter
 
-from users.models import CustomUser
+from users.models import CustomUser, Tarjeta
 from django.http import HttpResponse
 from django.contrib import messages
 
@@ -24,19 +25,26 @@ def compra(request,vId,uName):
 	viaje = Viaje.objects.get(id=vId)
 	user = CustomUser.objects.get(username=uName)
 	totalAsientos = viaje.combi.capacidad - viaje.pasajeros.count()
+
 	compra = False
-	print(request.POST.get("disponible"))
 	for i in range(totalAsientos):
 		#dni = request.POST.get("pasajero"+)
 		dniPasajero = request.POST.get("pasajero"+str(i)) #se que esto esta mal pero despues de que se me borro todo dije fue
-		print(dniPasajero)
 		if (dniPasajero is not None):
 			pas = Pasajero(usuario = user, dni = dniPasajero)
 			pas.save()
-			print(dniPasajero)
 			viaje.pasajeros.add(pas)
 			viaje.save()
 			compra = True
+			print(Tarjeta.objects.filter(numero = request.POST.get("numT")).exists())
+			if (Tarjeta.objects.filter(numero = request.POST.get("numT")).exists()):
+				tarjeta = Tarjeta.objects.get(numero=request.POST.get("numT"))
+			else:
+				tarjeta = Tarjeta(numero = request.POST.get("numT"),fecha= request.POST.get("fechaT"), titular="test")
+				tarjeta.save()
+			user.tarjetas.add(tarjeta)
+			user.save()
+
 	if compra:
 		messages.success(request, 'Compra realizada con exito')
 		return redirect("/")
