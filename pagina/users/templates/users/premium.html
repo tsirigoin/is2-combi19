@@ -13,38 +13,61 @@
               <h3>Seleccione un periodo para contratar su membresia GOLD </h3>
                 <div class='test_form'>
                     <label for="test_usuario" class="">Valor mes Premium $250 </label>
-
                     <p>
-                    <div class="md-form mb-5">
+                    <div class="md-form mb-1">
                         <label for="test_usuario" class="">Periodo de 1 mes Total $250</label>
                         <input type="radio" name="periodo" value="uno" required>
                     </div>
                     </p>
-
                     <p>
-                    <div class="md-form mb-5">
+                    <div class="md-form mb-1">
                         <label for="test_usuario" class="">Periodo de 3 meses Total $750</label>
                         <input type="radio" name="periodo" value="tres" required>
                     </div>
                     </p>
-
                     <p>
-                        <div class="md-form mb-5">
+                        <div class="md-form mb-1">
                             <label for="test_usuario" class="">Periodo de 6 meses Total $1500</label>
                             <input type="radio" name="periodo" value="seis" >
                         </div>
                     </p>
-
                     <p>
-                    <div class="md-form mb-5">
+                    <div class="md-form mb-1">
                         <label for="test_usuario" class="">Periodo de 12 meses Total $3000</label>
                         <input type="radio" name="periodo" value="doce" required>
                     </div>
                     </p>
 
+                    <h3>Seleccione una tarjeta para contratar su membresia GOLD </h3>
+
+
+                    <label for="tarjeta">Seleccione su tarjeta:</label>
+
+                      <select name="tarjeta" id="tarjeta">
+                          {% for t in user.tarjetas.all %}
+                            <option value="volvo">{{ t }}</option>
+                          {% endfor %}
+                      </select>
+
+                      <p>
+                      <div class="md-form mb-1">
+                          <label for="test_usuario" class="">Ingrese el mes de vencimiento de su tarjeta</label>
+                          <input type="month" name="vencimiento" required>
+                      </div>
+                      </p>
+
+                      <p>
+                      <div class="md-form mb-1">
+                          <label for="test_usuario" class="">Ingrese codigo de seguridad</label>
+                          <input type="text" name="cod_segu"  minlength="3" maxlength="3" required>
+                      </div>
+                      </p>
+
                 </div>
                 <hr class="mb-4">
                 <button class="btn btn-primary btn-lg btn-block" type="submit">Comprar Suscripcion Gold</button>
+
+
             </form>
         </div>
 </main>

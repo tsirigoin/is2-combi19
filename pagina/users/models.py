@@ -4,12 +4,13 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.validators import MinLengthValidator,ValidationError,MinValueValidator
 from datetime import date
 import datetime
+import json
 
 from .managers import CustomUserManager
 
 class Tarjeta(models.Model):
-    numero = models.IntegerField(max_length=19,validators=[MinLengthValidator(16)],unique=True)
-    fecha = models.DateField()
+    numero = models.CharField(max_length=19,validators=[MinLengthValidator(16)],unique=True)
+    fecha = models.CharField(max_length=40)
     titular = models.CharField(max_length=40)
 
     def __str__(self):
@@ -56,6 +57,9 @@ class CustomUser(AbstractUser):
 			return True
 		else:
 			return False
+
+	def test (self):
+		return (list(self.tarjetas.all()))
 
 class Chofer(models.Model):
 	user = models.OneToOneField(CustomUser,on_delete=models.CASCADE, null=True)
