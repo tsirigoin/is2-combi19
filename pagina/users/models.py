@@ -25,6 +25,7 @@ class CustomUser(AbstractUser):
 	fecha_nacimiento = models.DateField(_('Fecha de nacimiento'))
 	has_premium = models.BooleanField(_('Posee membresía premium'),default=False)
 	tarjetas = models.ManyToManyField(Tarjeta,blank=True)
+	fecha_vencimiento = models.DateField(_('Fecha de vencimiento'), blank=True, null=True)
 
 	USERNAME_FIELD = 'username'
 	REQUIRED_FIELDS = [
@@ -50,7 +51,7 @@ class CustomUser(AbstractUser):
 			self.has_premium = False
 		else:
 			self.has_premium = True
-	
+
 	def is_premium (self):
 		if self.has_premium:
 			return True

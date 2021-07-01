@@ -26,17 +26,37 @@
                         <input type='number' placeholder='{{test.temperatura}}'id='test_temperatura' step="0.1" name='test_temperatura' class='form-control' required/>
                     </div>
 
+                    <p>
                     <div class="md-form mb-5">
-                        <label for="test_estado" class="">Estado</label>
-                        <br/>
-                        {% if test.estado == "positivo" %}
-                            <input type='radio' placeholder=''id='test_estado' value="estadoPosi" name='test_estado' checked/>positivo
-                            <input type='radio' placeholder=''id='test_estado' value="estadoNega" name='test_estado' />negativo
-                          {% else %}
-                            <input type='radio' placeholder=''id='test_estado' value="estadoPosi" name='test_estado' />positivo
-                            <input type='radio' placeholder=''id='test_estado' value="estadoNega" name='test_estado' checked/>negativo
-                          {% endif %}
+                        <label for="test_usuario" class="">Tuvo fiebre la ultima semana?</label>
+                        <input type="radio" name="fiebre" value="fiebreSi" required> Si
+                        <input type="radio" name="fiebre" value="fiebreNo"> No
                     </div>
+                    </p>
+
+                    <p>
+                        <div class="md-form mb-5">
+                            <label for="test_usuario" class="">Tuvo dificultad respiratoria la ultima semana?</label>
+                            <input type="radio" name="difResp" value="difRespSi" required> Si
+                            <input type="radio" name="difResp" value="difRespNo"> No
+                        </div>
+                    </p>
+
+                    <p>
+                    <div class="md-form mb-5">
+                        <label for="test_usuario" class="">Tuvo perdida de olfato o gusto la ultima semana?</label>
+                        <input type="radio" name="olfato" value="olfatoSi" required> Si
+                        <input type="radio" name="olfato" value="olfatoNo"> No
+                    </div>
+                    </p>
+
+                    <p>
+                    <div class="md-form mb-5">
+                        <label for="test_usuario" class="">Tuvo dolor de cabeza la ultima semana?</label>
+                        <input type="radio" name="dolor" value="dolorSi" required> Si
+                        <input type="radio" name="dolor" value="dolorNo"> No
+                    </div>
+                    </p>
 
 
                 </div>

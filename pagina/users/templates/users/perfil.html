@@ -43,6 +43,7 @@
 					<div class="text-right">
 						<a role="button" class="btn btn-outline-primary btn-sm" href="{% url 'editar_perfil' %}">Editar Perfil</a>
 					</div>
+
 					<br />
 					<form action="{% url 'cambiar_membresia' %}" method="POST">
 						{% csrf_token %}
@@ -50,9 +51,10 @@
 						<div class="text-right">
 							<button type="submit" class="btn btn-outline-secondary btn-sm">Cancelar Gold</button>
 						</div>
+						<label for="test_usuario" class="">Su Suscripcion Gold vence el dia {{ user.fecha_vencimiento }}</label>
 						{% else %}
 						<div class="text-right">
-							<button type="submit" class="btn btn-outline-secondary btn-sm">Contratar Gold</button>
+							<a role="button" class="btn btn-outline-secondary btn-sm" href="{% url 'contratar_membresia' %}">Contratar Membresia </a>
 						</div>
 						{% endif %}
 					</form>
