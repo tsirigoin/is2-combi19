@@ -36,7 +36,7 @@ def comprar_insumo(request,pId,iId):
 	insumo = Insumo.objects.get(id=iId)
 	form = request.POST
 	cant = int(form['cant'])
-	if insumo.cantidadActual > cant:
+	if insumo.cantidadActual > cant and cant > 0:
 		if pasaje.insumos:
 			aux = eval(pasaje.insumos)
 		else:

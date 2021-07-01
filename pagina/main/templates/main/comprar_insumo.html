@@ -21,7 +21,25 @@
 								<form action="{% url 'comprar_insumo' pId=pasaje.id iId=i.id %}" method="post">
 									{% csrf_token %}
 									<label>¿Cuántos desea comprar?</label>
-									<input type="number" name="cant" id="cant"></input>
+									<input type="number" name="cant" id="cant" required></input>
+									<label for="tarjeta">Seleccione su tarjeta:</label>
+									<select name="tarjeta" id="tarjeta">
+										{% for t in user.tarjetas.all %}
+											<option value="volvo">{{ t }}</option>
+										{% endfor %}
+									</select>
+									<p>
+										<div class="md-form mb-1">
+											<label for="test_usuario" class="">Ingrese el mes de vencimiento de su tarjeta</label>
+											<input type="month" name="vencimiento" required></input>
+										</div>
+									</p>
+									<p>
+										<div class="md-form mb-1">
+											<label for="test_usuario" class="">Ingrese codigo de seguridad</label>
+											<input type="text" name="cod_segu"  minlength="3" maxlength="3" required></input>
+										</div>
+									</p>
 									<div class="text-right">
 										<button type="submit" class="btn btn-outline-primary btn-sm">Confirmar Compra</button>
 						  			</div>
