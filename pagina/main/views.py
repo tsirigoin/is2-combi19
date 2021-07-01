@@ -8,6 +8,9 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.core import serializers
 
+import datetime
+from datetime import date, timedelta
+
 # Create your views here.
 
 def home(request):
@@ -52,5 +55,17 @@ def compra(request,vId,uName):
 		return redirect("/")
 	return render(request, "main/compra.html", {"viaje": viaje, "total":totalAsientos, "tarjetas":tarjetas})
 
-def checkout(request):
-	return render(request, "main/checkout.html")
+def checkout(response):
+	if response.method == 'POST':
+		form = response.POST
+		usuario = CustomUser.objects.get(username=response.user.username)
+		tarjeta = Tarjeta(	numero=form['tarjeta_codigo'],
+								fecha=form['fecha_ven'],
+								titular=form['tarjeta_nombre']
+							)
+		tarjeta.save()
+		usuario.tarjetas.add(tarjeta)
+		usuario.save()
+		return redirect('perfil')
+	else:
+		return render(response, "main/checkout.html", {'user': response.user })

@@ -43,7 +43,10 @@
 					<div class="text-right">
 						<a role="button" class="btn btn-outline-primary btn-sm" href="{% url 'editar_perfil' %}">Editar Perfil</a>
 					</div>
-
+					<br />
+					<div class="text-right">
+						<a role="button" class="btn btn-outline-success btn-sm" href="{% url 'checkout' %}">Agregar Tarjeta</a>
+					</div>
 					<br />
 					<form action="{% url 'cambiar_membresia' %}" method="POST">
 						{% csrf_token %}
