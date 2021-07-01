@@ -35,7 +35,7 @@ def logout(response):
 
 def perfil(response):
 	viajes_pendientes = Viaje.objects.filter(pasajeros__usuario=response.user, pasajeros__estado='reservado')
-	viajes_finalizados = Viaje.objects.filter(Q(pasajeros__usuario=response.user) and ~Q(pasajeros__estado='reservado'))
+	viajes_finalizados = Viaje.objects.filter(pasajeros__usuario=response.user and ~Q(pasajeros__estado='reservado'))
 	return render(response,'users/perfil.html',{
 		'user': response.user,
 		'viajes_finalizados': viajes_finalizados,
@@ -169,9 +169,18 @@ def cancelar_viaje(response, vId):
 def viaje_en_curso(response, vId):
 	viaje = Viaje.objects.get(id=vId)
 	for p in viaje.pasajeros.all():
-		if p.estado == 'reservado':
-			p.en_curso()
+		try:
+			p.test
+		except:
+			p.perdido()
 			p.save()
+		else:
+			if p.test.estado == 'negativo':
+				p.en_curso()
+				p.save()
+			else:
+				p.cancelar()
+				p.save()
 	viaje.en_curso()
 	viaje.save()
 	return redirect('chofer')

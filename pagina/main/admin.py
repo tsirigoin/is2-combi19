@@ -15,7 +15,8 @@ class InsumoAdmin(admin.ModelAdmin):
 		'nombre',
 		'descripcion',
 		'precio',
-		'cantidad',
+		'cantidadActual',
+		'cantidadTotal',
 	)
 admin.site.register(Ruta)
 admin.site.register(Viaje)

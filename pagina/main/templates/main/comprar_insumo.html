@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="container mx-auto">
+	<div class="row">
+		<div class="col-sm-12 col-md-12 col-lg-3 pb-4">
+			<div class="row">
+				{% for i in insumos %}
+					<div class="col-sm-12 col-md-12 col-lg-12 pb-4">
+						<div class="h-100">
+							<div class="card-body">
+								<h5 class="card-title">{{ i.nombre }}</h5>
+								<p class="text-muted mb-0" style="font-size: 12px">Descripción:</p>
+								<p class="card-text text-muted" style="font-size: 12px">{{ i.descripcion }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">Precio:</p>
+								<p class="card-text text-muted" style="font-size: 12px">$ {{ i.precio }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">Stock:</p>
+								<p class="card-text text-muted" style="font-size: 12px">{{ i.cantidadActual }}</p>
+								<br />
+								<form action="{% url 'comprar_insumo' pId=pasaje.id iId=i.id %}" method="post">
+									{% csrf_token %}
+									<label>¿Cuántos desea comprar?</label>
+									<input type="number" name="cant" id="cant"></input>
+									<div class="text-right">
+										<button type="submit" class="btn btn-outline-primary btn-sm">Confirmar Compra</button>
+						  			</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

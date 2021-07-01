@@ -1,6 +1,6 @@
 from django.db.models.query import QuerySet
 from django.shortcuts import render,redirect
-from .models import Pasajero, Viaje
+from .models import Insumo, Pasajero, Viaje
 from .filters import ProductFilter
 
 from users.models import CustomUser, Tarjeta
@@ -24,6 +24,32 @@ def viaje_list(request):
 	viajes= Viaje.objects.filter(combi__capacidad__gt=0,estado='reservado')
 	filter = ProductFilter(request.GET, queryset = viajes)
 	return render(request, 'main/search.html', {'filter' : filter})
+
+def ver_insumos(request,vId):
+	viaje = Viaje.objects.get(id=vId)
+	insumos = viaje.insumo.all()
+	pasaje = viaje.pasajeros.filter(usuario=request.user).first()
+	return render(request,'main/comprar_insumo.html',{'insumos':insumos,'pasaje':pasaje})
+
+def comprar_insumo(request,pId,iId):
+	pasaje = Pasajero.objects.get(id=pId)
+	insumo = Insumo.objects.get(id=iId)
+	form = request.POST
+	cant = int(form['cant'])
+	if insumo.cantidadActual > cant:
+		if pasaje.insumos:
+			aux = eval(pasaje.insumos)
+		else:
+			aux = dict()
+		insumo.cantidadActual = insumo.cantidadActual - cant
+		aux[insumo.nombre] = cant
+		insumo.save()
+		pasaje.insumos = eval(str(aux))
+		pasaje.save()
+		messages.success(request,'Compra realizada con éxito.')
+	else:
+		messages.error(request,'Ingresa una cantidad posible.')
+	return redirect('perfil')
 
 def compra(request,vId,uName):
 	viaje = Viaje.objects.get(id=vId)

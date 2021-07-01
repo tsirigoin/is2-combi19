@@ -8,6 +8,12 @@
 		color: white;
 		text-align: center;
 	}
+	.error{
+		list-style: none;
+		background-color: #8b4444;
+		color: white;
+		text-align: center;
+	}
 </style>
 {% endblock stylesheets %}
 
@@ -77,20 +83,27 @@
 		                <div class="h-100">
 							<div class="card-body">
 		                  		<h5 class="card-title">{{ v.descripcion }}</h5>
-                          			<p class="text-muted mb-0" style="font-size: 12px">Hora de salida:</p>
-		                    		<p class="card-text text-muted" style="font-size:12px">{{ v.hora }}</p>
-									<p class="text-muted mb-0" style="font-size: 12px">Fecha:</p>
-									<p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
-									<p class="text-muted mb-0" style="font-size: 12px">Precio:</p>
-									{% if user.has_premium %}
-										{% widthratio v.precio 100 70 as precio %}
-										<p class="card-text text-muted" style="font-size: 12px">${{ precio }}</p>
-									{% else %}
-										<p class="card-text text-muted" style="font-size: 12px">${{ v.precio }}</p>
-									{% endif %}
-									<p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
-									<p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
-									<form action="{% url 'devolver_pasaje' vId=v.id %}" method="post">
+                       			<p class="text-muted mb-0" style="font-size: 12px">Hora de salida:</p>
+		                  		<p class="card-text text-muted" style="font-size:12px">{{ v.hora }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">Fecha:</p>
+								<p class="card-text text-muted" style="font-size:12px">{{ v.fecha }}</p>
+								<p class="text-muted mb-0" style="font-size: 12px">Precio:</p>
+								{% if user.has_premium %}
+									{% widthratio v.precio 100 70 as precio %}
+									<p class="card-text text-muted" style="font-size: 12px">${{ precio }}</p>
+								{% else %}
+									<p class="card-text text-muted" style="font-size: 12px">${{ v.precio }}</p>
+								{% endif %}
+								<p class="text-muted mb-0" style="font-size: 12px">Ruta:</p>
+								<p class="card-text text-muted" style="font-size:12px">{{ v.ruta }}</p>
+								<form action="{% url 'ver_insumos' vId=v.id %}" method="post">
+									{% csrf_token %}
+									<div class="text-right">
+										<button type="submit" class="btn btn-outline-primary btn-sm">Ver Insumos</button>
+									</div>
+								</form>
+								<br />
+								<form action="{% url 'devolver_pasaje' vId=v.id %}" method="post">
 									{% csrf_token %}
 						  			<div class="text-right">
 										<button type="submit" value={{v.id}} onclick="return confirm('Esta seguro?')" class="btn btn-outline-secondary btn-sm" >Devolver Pasaje</button>

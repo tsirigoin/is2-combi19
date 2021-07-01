@@ -43,11 +43,6 @@
 									<p>{{ p.dni }}</p>
 									<p class="text-muted mb-0" style="font-size: 12px">Estado:</p>
 									<p>{{ p.estado.title }}</p>
-									{% if p.estado != 'perdido' %}
-										<div class="text-right">
-											<a role="button" class="btn btn-outline-danger btn-sm" href="{% url 'pasaje_perdido' vId=viaje.id pId=p.id %}">Marcar como Ausente</a>
-										</div>
-									{% endif %}
 									{% for t in test.all %}
 										{% if t.pasajero == p %}
 											<p class="text-muted mb-0" style="font-size: 12px">Test:</p>
